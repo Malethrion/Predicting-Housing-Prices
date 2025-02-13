@@ -47,3 +47,13 @@ predicted_prices = [110000, 190000, 280000]  # Replace with predicted data
 
 fig = px.scatter(x=actual_prices, y=predicted_prices, labels={'x': 'Actual Prices', 'y': 'Predicted Prices'}, title="Actual vs Predicted Prices")
 st.plotly_chart(fig)
+
+st.markdown("""
+### Feature Importance
+The plot above shows the relative importance of each feature in predicting house prices. A higher bar indicates a more significant contribution to the predicted price.
+""")
+
+st.markdown("""
+### Prediction Explanation
+The model predicts the price of the house based on the features you provided. It uses historical data to estimate how factors like square footage, number of bedrooms, and bathrooms affect the price.
+""")
