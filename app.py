@@ -19,3 +19,13 @@ bathrooms = st.number_input('Number of Bathrooms', min_value=1)
 if st.button('Predict Price'):
     # Code for prediction will go here
     pass
+
+if st.button('Predict Price'):
+    # Convert inputs into a suitable format for the model
+    input_data = np.array([[sqft, bedrooms, bathrooms]])
+    
+    # Make prediction
+    predicted_price = model.predict(input_data)
+    
+    # Display the predicted price
+    st.markdown(f"### Predicted House Price: ${predicted_price[0]:,.2f}")
