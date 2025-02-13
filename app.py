@@ -29,3 +29,21 @@ if st.button('Predict Price'):
     
     # Display the predicted price
     st.markdown(f"### Predicted House Price: ${predicted_price[0]:,.2f}")
+
+# Assuming you have a feature importance attribute in your model
+if hasattr(model, 'coef_'):
+    feature_names = ['Square Footage', 'Bedrooms', 'Bathrooms']  # Modify as per your model
+    importance = model.coef_
+    
+    fig, ax = plt.subplots()
+    ax.barh(feature_names, importance)
+    ax.set_xlabel('Importance')
+    ax.set_title('Feature Importance')
+    st.pyplot(fig)
+
+# Example actual vs predicted prices
+actual_prices = [100000, 200000, 300000]  # Replace with your actual data
+predicted_prices = [110000, 190000, 280000]  # Replace with predicted data
+
+fig = px.scatter(x=actual_prices, y=predicted_prices, labels={'x': 'Actual Prices', 'y': 'Predicted Prices'}, title="Actual vs Predicted Prices")
+st.plotly_chart(fig)
