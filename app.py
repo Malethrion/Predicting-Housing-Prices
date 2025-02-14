@@ -1,45 +1,37 @@
 import streamlit as st
 import pandas as pd
-import pickle
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
-from sklearn.compose import ColumnTransformer
+import joblib
+from sklearn.preprocessing import StandardScaler
 
-# Load the trained model
-with open('model.pkl', 'rb') as f:
-    model = pickle.load(f)
+# Load the trained model and the preprocessing pipeline
+model = joblib.load('model.pkl')
+scaler = joblib.load('scale_features.pkl')  # Assuming you have a scaler for input features
 
-# Set up the Streamlit app
-st.title('Housing Price Prediction')
+# Streamlit UI
+st.title("House Price Prediction App")
 
-# Create user inputs for the model
-lot_area = st.number_input('Lot Area', min_value=0)
-overall_qual = st.selectbox('Overall Quality', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-year_built = st.number_input('Year Built', min_value=1800, max_value=2025)
+# User inputs for house features
+sqft = st.number_input("Enter square footage of the house:", min_value=500, max_value=10000, step=10)
+year_built = st.number_input("Enter year the house was built:", min_value=1900, max_value=2025, step=1)
+garage_area = st.number_input("Enter garage area (sqft):", min_value=0, max_value=2000, step=10)
+kitchen_quality = st.selectbox("Select kitchen quality:", ['Excellent', 'Good', 'Average', 'Fair', 'Poor'])
 
-# More inputs can be added based on the columns used in the model
+# Add more feature inputs as needed, e.g., 'YearRemodAdd', '2ndFlrSF', etc.
 
-# Once the user submits, make the prediction
-if st.button('Predict'):
-    input_data = pd.DataFrame({
-        'LotArea': [lot_area],
-        'OverallQual': [overall_qual],
-        'YearBuilt': [year_built],
-        # Add more features based on the ones in your model
-    })
-    
-    # Prepare the data using the same preprocessing steps as before
-    numeric_columns = input_data.select_dtypes(include=['number']).columns
-    categorical_columns = input_data.select_dtypes(include=['object']).columns
-    
-    preprocessor = ColumnTransformer(
-        transformers=[
-            ('num', StandardScaler(), numeric_columns),  # Scaling numerical features
-            ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_columns)  # OneHotEncoding categorical features
-        ])
-    
-    # Make predictions
-    prediction = model.predict(input_data)
-    
-    # Display the prediction
-    st.write(f"Predicted Sale Price: ${prediction[0]:,.2f}")
+# Gather inputs into a DataFrame
+user_data = pd.DataFrame({
+    '1stFlrSF': [sqft], 
+    'YearBuilt': [year_built],
+    'GarageArea': [garage_area],
+    'KitchenQual': [kitchen_quality],
+    # Add other features similarly
+})
 
+# Feature scaling and transformation
+user_data_scaled = scaler.transform(user_data)
+
+# Predict house price
+prediction = model.predict(user_data_scaled)
+
+# Display prediction result
+st.write(f"Predicted House Price: ${prediction[0]:,.2f}")
