@@ -1,44 +1,36 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.impute import SimpleImputer
-from sklearn.compose import ColumnTransformer
-from sklearn.pipeline import Pipeline
-import pickle
+from sklearn.metrics import mean_squared_error
+import joblib
 
-# Load the dataset
-data = pd.read_csv("../data/final_cleaned_train.csv")
+# Load the cleaned data
+data = pd.read_csv("data/final_cleaned_train.csv")
 
-# Separate features and target variable
+# Features and target
 X = data.drop(columns=['SalePrice'])
 y = data['SalePrice']
 
-# Split data into training and testing sets (80% train, 20% test)
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1, random_state=42)
+# Split the data into training and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Identify numerical and categorical columns
-numeric_columns = X.select_dtypes(include=['number']).columns
-categorical_columns = X.select_dtypes(include=['object']).columns
+# Initialize the model
+model = RandomForestRegressor(random_state=42)
 
-# Define the preprocessor with imputation and scaling
-preprocessor = ColumnTransformer(
-    transformers=[
-        ('num', Pipeline([('imputer', SimpleImputer(strategy='median')), ('scaler', StandardScaler())]), numeric_columns),
-        ('cat', Pipeline([('imputer', SimpleImputer(strategy='most_frequent')), ('encoder', OneHotEncoder(handle_unknown='ignore'))]), categorical_columns)
-    ])
+# Hyperparameter tuning using GridSearchCV
+param_grid = {
+    'n_estimators': [100, 200],
+    'max_depth': [10, 20, None]
+}
 
-# Create and train the model pipeline
-pipeline = Pipeline(steps=[
-    ('preprocessor', preprocessor),
-    ('model', RandomForestRegressor(n_estimators=100, random_state=42))
-])
+grid_search = GridSearchCV(estimator=model, param_grid=param_grid, cv=3)
+grid_search.fit(X_train, y_train)
 
-# Fit the model
-pipeline.fit(X_train, y_train)
+# Evaluate the model
+y_pred = grid_search.best_estimator_.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print(f"Mean Squared Error: {mse}")
 
 # Save the trained model
-with open('model.pkl', 'wb') as f:
-    pickle.dump(pipeline, f)
+joblib.dump(grid_search.best_estimator_, 'model.pkl')
 
-print("Model has been trained and saved to 'model.pkl'.")
