@@ -6,8 +6,11 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 import joblib
 
-# Load your raw data
-data = pd.read_csv("../data/train.csv")
+# Load the pre-trained data cleaning pipeline
+pipeline = joblib.load('scripts/data_cleaning_pipeline.pkl')
+
+# Apply the pipeline to your new data
+X_new = pipeline.transform(new_data)
 
 # Split data into features and target
 X = data.drop(columns=['SalePrice'])

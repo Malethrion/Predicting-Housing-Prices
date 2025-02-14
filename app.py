@@ -1,37 +1,69 @@
-import streamlit as st
-import pandas as pd
 import joblib
-from sklearn.preprocessing import StandardScaler
+import pandas as pd
+from flask import Flask, request, render_template
 
-# Load the trained model and the preprocessing pipeline
-model = joblib.load('model.pkl')
-scaler = joblib.load('scale_features.pkl')  # Assuming you have a scaler for input features
+app = Flask(__name__)
 
-# Streamlit UI
-st.title("Predicting Housing Price App")
+# Load the pre-trained model and data cleaning pipeline
+model = joblib.load('scripts/model.pkl')  # Ensure this is the correct path to your model
+data_cleaning_pipeline = joblib.load('scripts/data_cleaning_pipeline.pkl')  # Ensure this is the correct path to your pipeline
 
-# User inputs for house features
-sqft = st.number_input("Enter square footage of the house:", min_value=500, max_value=10000, step=10)
-year_built = st.number_input("Enter year the house was built:", min_value=1900, max_value=2025, step=1)
-garage_area = st.number_input("Enter garage area (sqft):", min_value=0, max_value=2000, step=10)
-kitchen_quality = st.selectbox("Select kitchen quality:", ['Excellent', 'Good', 'Average', 'Fair', 'Poor'])
+# Function to clean incoming data
+def clean_input_data(input_data):
+    # Assuming the input is a dictionary with all required features
+    df = pd.DataFrame([input_data])
+    
+    # Apply the data cleaning pipeline to the input data
+    cleaned_data = data_cleaning_pipeline.transform(df)  # This should match the pipeline steps
+    return cleaned_data
 
-# Add more feature inputs as needed, e.g., 'YearRemodAdd', '2ndFlrSF', etc.
+# Function to make predictions
+def make_prediction(cleaned_data):
+    prediction = model.predict(cleaned_data)
+    return prediction[0]
 
-# Gather inputs into a DataFrame
-user_data = pd.DataFrame({
-    '1stFlrSF': [sqft], 
-    'YearBuilt': [year_built],
-    'GarageArea': [garage_area],
-    'KitchenQual': [kitchen_quality],
-    # Add other features similarly
-})
+@app.route('/')
+def home():
+    return render_template('index.html')  # Replace with the appropriate HTML file for your UI
 
-# Feature scaling and transformation
-user_data_scaled = scaler.transform(user_data)
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Retrieve data from form inputs (update based on your form structure)
+    input_data = {
+        '1stFlrSF': float(request.form['1stFlrSF']),
+        '2ndFlrSF': float(request.form['2ndFlrSF']),
+        'BedroomAbvGr': int(request.form['BedroomAbvGr']),
+        'BsmtExposure': request.form['BsmtExposure'],
+        'BsmtFinType1': request.form['BsmtFinType1'],
+        'BsmtFinSF1': float(request.form['BsmtFinSF1']),
+        'BsmtUnfSF': float(request.form['BsmtUnfSF']),
+        'TotalBsmtSF': float(request.form['TotalBsmtSF']),
+        'GarageArea': float(request.form['GarageArea']),
+        'GarageFinish': request.form['GarageFinish'],
+        'GarageYrBlt': int(request.form['GarageYrBlt']),
+        'GrLivArea': float(request.form['GrLivArea']),
+        'KitchenQual': request.form['KitchenQual'],
+        'LotArea': float(request.form['LotArea']),
+        'LotFrontage': float(request.form['LotFrontage']),
+        'MasVnrArea': float(request.form['MasVnrArea']),
+        'EnclosedPorch': float(request.form['EnclosedPorch']),
+        'OpenPorchSF': float(request.form['OpenPorchSF']),
+        'OverallCond': int(request.form['OverallCond']),
+        'OverallQual': int(request.form['OverallQual']),
+        'WoodDeckSF': float(request.form['WoodDeckSF']),
+        'YearBuilt': int(request.form['YearBuilt']),
+        'YearRemodAdd': int(request.form['YearRemodAdd']),
+    }
 
-# Predict house price
-prediction = model.predict(user_data_scaled)
+    # Clean the incoming data
+    cleaned_data = clean_input_data(input_data)
 
-# Display prediction result
-st.write(f"Predicted House Price: ${prediction[0]:,.2f}")
+    # Make prediction using the cleaned data
+    predicted_price = make_prediction(cleaned_data)
+    
+    # Return prediction result to the user
+    return render_template('result.html', prediction=predicted_price)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+
