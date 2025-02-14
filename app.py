@@ -8,7 +8,7 @@ model = joblib.load('model.pkl')
 scaler = joblib.load('scale_features.pkl')  # Assuming you have a scaler for input features
 
 # Streamlit UI
-st.title("House Price Prediction App")
+st.title("Predicting Housing Price App")
 
 # User inputs for house features
 sqft = st.number_input("Enter square footage of the house:", min_value=500, max_value=10000, step=10)

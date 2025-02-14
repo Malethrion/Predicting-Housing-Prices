@@ -4,7 +4,20 @@ from sklearn.impute import SimpleImputer
 # Load dataset
 df = pd.read_csv("../data/train.csv")
 
-# Identify missing values
+# Identify missing valuesfrom sklearn.impute import SimpleImputer
+import pandas as pd
+
+# Load data
+data = pd.read_csv("../ata/train.csv")
+
+# Impute missing values for numerical columns
+numerical_columns = ['1stFlrSF', 'GarageArea', 'YearBuilt']  # Example columns
+imputer = SimpleImputer(strategy='mean')
+data[numerical_columns] = imputer.fit_transform(data[numerical_columns])
+
+# Save the cleaned data
+data.to_csv("data/final_cleaned_train.csv", index=False)
+
 missing_values = df.isnull().sum()
 missing_columns = missing_values[missing_values > 0].index
 
