@@ -3,17 +3,29 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-def page_correlation_study():
-    st.title("📊 Correlation Study")
-    
-    df = pd.read_csv("data/final_cleaned_train.csv")
-    
-    st.write("### Sample Data")
-    st.write(df.head())
+st.title("📊 Correlation Study")
 
-    st.write("### Correlation Heatmap")
-    plt.figure(figsize=(10, 6))
-    sns.heatmap(df.corr(), annot=True, cmap="coolwarm")
-    st.pyplot()
+# Load the dataset
+data = pd.read_csv("./data/train.csv")
 
-page_correlation_study()
+# Display sample data
+st.subheader("Sample Data")
+st.write(data.head())
+
+# Handle categorical variables before correlation computation
+st.subheader("Correlation Heatmap")
+
+# Convert categorical variables to numerical using label encoding
+categorical_cols = data.select_dtypes(include=['object']).columns
+data_encoded = data.copy()
+
+for col in categorical_cols:
+    data_encoded[col] = data_encoded[col].astype('category').cat.codes
+
+# Compute correlation
+corr_matrix = data_encoded.corr()
+
+# Plot heatmap
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.heatmap(corr_matrix, annot=False, cmap="coolwarm", ax=ax)
+st.pyplot(fig)
