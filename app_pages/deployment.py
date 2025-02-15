@@ -17,4 +17,4 @@ st.markdown("""
 """)
 
 if st.button("Deploy Model"):
-    st.success("✅ Model successfully deployed! You can now use the prediction page.")
+    st.success("Model successfully deployed! You can now use the prediction page.")
