@@ -1,16 +1,20 @@
 import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import pickle
 
 def app():
-st.title("Feature Importance")
+    st.title("Feature Importance")
 
-st.write("Analyze which features contribute the most to the prediction.")
+    # Load model
+    with open("../models/trained_model.pkl", "rb") as file:
+        model = pickle.load(file)
 
-# Example: Display feature importance methods
-st.subheader("Methods Used")
-st.write("- SHAP Values")
-st.write("- Permutation Importance")
-st.write("- Coefficients from Linear Models")
+    # Load dataset
+    data = pd.read_csv("../data/processed_train.csv")
+    feature_names = data.drop(columns=["SalePrice"]).columns
 
-# Example: Placeholder for feature importance results
-if st.button("Compute Feature Importance"):
-    st.write("Computing feature importance... (Placeholder for actual analysis)")
+    # Plot importance
+    plt.figure(figsize=(10, 5))
+    plt.barh(feature_names, model.feature_importances_)
+    st.pyplot()
