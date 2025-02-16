@@ -4,14 +4,14 @@ import pickle
 import os
 
 def app():
-    st.title("Prediction Page")
+    st.title("House Price Prediction")
 
     model_path = "models/trained_model.pkl"
     feature_path = "models/feature_names.pkl"
 
     # Ensure model and feature file exist
     if not os.path.exists(model_path) or not os.path.exists(feature_path):
-        st.error(f"Model or feature file not found. Train the model first.")
+        st.error("Model or feature file not found. Please train the model first.")
         return
 
     # Load trained model
@@ -22,29 +22,57 @@ def app():
     with open(feature_path, "rb") as file:
         feature_names = pickle.load(file)
 
-    # Select a few features for user input
+    # Features for user input
     selected_features = ["GrLivArea", "OverallQual", "GarageCars", "YearBuilt", "TotalBsmtSF"]
 
-    st.write("### Enter House Features")
+    st.subheader("Enter House Features")
 
     user_input = {}
     for feature in selected_features:
-        user_input[feature] = st.number_input(f"{feature}", value=0.0)
+        default_values = {
+            "GrLivArea": 1500,
+            "OverallQual": 5,
+            "GarageCars": 2,
+            "YearBuilt": 2000,
+            "TotalBsmtSF": 1000,
+        }
+        min_values = {
+            "GrLivArea": 500,
+            "OverallQual": 1,
+            "GarageCars": 0,
+            "YearBuilt": 1800,
+            "TotalBsmtSF": 0,
+        }
+        max_values = {
+            "GrLivArea": 5000,
+            "OverallQual": 10,
+            "GarageCars": 4,
+            "YearBuilt": 2023,
+            "TotalBsmtSF": 3000,
+        }
+
+        user_input[feature] = st.number_input(
+            f"{feature}", 
+            min_value=min_values[feature], 
+            max_value=max_values[feature], 
+            value=default_values[feature]
+        )
 
     # Convert input to DataFrame
     input_df = pd.DataFrame([user_input])
 
     # Ensure the input has the same features as the model
     missing_features = set(feature_names) - set(input_df.columns)
-    for feature in missing_features:
-        input_df[feature] = 0  # Fill missing features with 0
+    missing_features_dict = {feature: 0 for feature in missing_features}
+    input_df = input_df.assign(**missing_features_dict)
 
     # Ensure correct column order
     input_df = input_df[feature_names]
 
     # Predict button
     if st.button("Predict Price"):
-        predicted_price = model.predict(input_df)[0]
-        st.success(f"Predicted House Price: ${predicted_price:,.2f}")
-
-
+        try:
+            predicted_price = model.predict(input_df)[0]
+            st.success(f"Predicted House Price: ${predicted_price:,.2f}")
+        except Exception as e:
+            st.error(f"Prediction failed: {str(e)}")

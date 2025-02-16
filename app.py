@@ -1,32 +1,33 @@
 import streamlit as st
+import importlib
 
-
+# Set the page configuration
 st.set_page_config(page_title="Housing Price Prediction", layout="wide")
 
-from app_pages import (
-    home_page, correlation_study, data_cleaning,
-    feature_engineering, model_training, model_evaluation,
-    hyperparameter_tuning, feature_importance, final_model, deployment, prediction_page
-)
-
-# Sidebar navigation
+# Define available pages
 PAGES = {
-    "Home": home_page,
-    "Correlation Study": correlation_study,
-    "Data Cleaning": data_cleaning,
-    "Feature Engineering": feature_engineering,
-    "Model Training": model_training,
-    "Model Evaluation": model_evaluation,
-    "Hyperparameter Tuning": hyperparameter_tuning,
-    "Feature Importance": feature_importance,
-    "Final Model": final_model,
-    "Deployment": deployment,
-    "Prediction": prediction_page,
+    "Home": "app_pages.home_page",
+    "Correlation Study": "app_pages.correlation_study",
+    "Data Cleaning": "app_pages.data_cleaning",
+    "Feature Engineering": "app_pages.feature_engineering",
+    "Model Training": "app_pages.model_training",
+    "Model Evaluation": "app_pages.model_evaluation",
+    "Hyperparameter Tuning": "app_pages.hyperparameter_tuning",
+    "Feature Importance": "app_pages.feature_importance",
+    "Final Model": "app_pages.final_model",
+    "Deployment": "app_pages.deployment",
+    "Prediction": "app_pages.prediction_page",
 }
 
+# Sidebar navigation
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.selectbox("Choose a page", list(PAGES.keys()))
 
-# Load selected page
-page = PAGES[selected_page]
-page.app()  # Call the app function of the selected module
+# Dynamically import and load the selected page
+try:
+    module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
+    module.app()  # Call the app function of the selected module
+except ModuleNotFoundError as e:
+    st.error(f"Error: {selected_page} module not found. Please check your project structure.")
+except AttributeError:
+    st.error(f"Error: {selected_page} module is missing an `app()` function.")
