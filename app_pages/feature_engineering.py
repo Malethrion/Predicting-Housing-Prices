@@ -3,6 +3,7 @@ import pandas as pd
 import os
 from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
 
 def app():
     st.title("Feature Engineering")
@@ -23,15 +24,18 @@ def app():
     preprocessor = ColumnTransformer(
         transformers=[
             ('num', StandardScaler(), numerical_features),
-            ('cat', OneHotEncoder(handle_unknown='ignore'), categorical_features)
+            ('cat', OneHotEncoder(handle_unknown='ignore', sparse_output=False), categorical_features)
         ]
     )
 
     # Apply transformations
     transformed_data = preprocessor.fit_transform(data)
 
+    # Correctly extract feature names
+    encoded_feature_names = preprocessor.named_transformers_['cat'].get_feature_names_out(categorical_features)
+    feature_names = numerical_features + list(encoded_feature_names)
+
     # Convert to DataFrame
-    feature_names = numerical_features + list(preprocessor.named_transformers_['cat'].get_feature_names_out(categorical_features))
     processed_data = pd.DataFrame(transformed_data, columns=feature_names)
 
     # Save processed data
