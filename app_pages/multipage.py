@@ -1,6 +1,5 @@
 import streamlit as st
 
-def app():
 class MultiPage:
     """Class to handle multiple Streamlit pages"""
     def __init__(self, app_name) -> None:

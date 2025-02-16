@@ -6,11 +6,11 @@ def app():
     st.title("Prediction Page")
 
     # Load trained model
-    with open("../models/trained_model.pkl", "rb") as file:
+    with open("models/trained_model.pkl", "rb") as file:
         model = pickle.load(file)
 
     # Get feature names
-    data = pd.read_csv("../data/processed_train.csv")
+    data = pd.read_csv("data/processed_train.csv")
     features = data.drop(columns=["SalePrice"]).columns.tolist()
 
     # User input

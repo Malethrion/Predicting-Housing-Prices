@@ -7,12 +7,12 @@ def app():
     st.title("Model Evaluation")
 
     # Load test data
-    data = pd.read_csv("../data/processed_train.csv")
+    data = pd.read_csv("data/processed_train.csv")
     X = data.drop(columns=["SalePrice"])
     y = data["SalePrice"]
 
     # Load trained model
-    with open("../models/trained_model.pkl", "rb") as f:
+    with open("models/trained_model.pkl", "rb") as f:
         model = pickle.load(f)
 
     # Predictions

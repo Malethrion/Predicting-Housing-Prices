@@ -8,7 +8,7 @@ def app():
     st.title("Model Training")
 
     # Load processed data
-    data = pd.read_csv("../data/processed_train.csv")
+    data = pd.read_csv("data/processed_train.csv")
     X = data.drop(columns=["SalePrice"])
     y = data["SalePrice"]
 
@@ -20,7 +20,7 @@ def app():
     model.fit(X_train, y_train)
 
     # Save model
-    with open("../models/trained_model.pkl", "wb") as f:
+    with open("models/trained_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
     st.write("Model training completed. Saved model to 'trained_model.pkl'.")

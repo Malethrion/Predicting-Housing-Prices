@@ -7,7 +7,7 @@ def app():
     st.title("Correlation Study")
     
     # Load dataset
-    data = pd.read_csv("../data/final_cleaned_train.csv")
+    data = pd.read_csv("data/final_cleaned_train.csv")
     
     # Compute correlation matrix
     correlation_matrix = data.corr()

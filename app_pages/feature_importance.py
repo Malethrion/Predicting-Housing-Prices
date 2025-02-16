@@ -7,7 +7,7 @@ def app():
     st.title("Feature Importance")
 
     # Load model
-    with open("../models/trained_model.pkl", "rb") as f:
+    with open("models/trained_model.pkl", "rb") as f:
         model = pickle.load(f)
 
     # Get feature importance
