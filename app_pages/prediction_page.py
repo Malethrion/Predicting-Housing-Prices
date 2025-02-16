@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import os
+import numpy as np
 
 def app():
     st.title("House Price Prediction")
@@ -63,8 +64,8 @@ def app():
 
     # Ensure the input has the same features as the model
     missing_features = set(feature_names) - set(input_df.columns)
-    missing_features_dict = {feature: 0 for feature in missing_features}
-    input_df = input_df.assign(**missing_features_dict)
+    for feature in missing_features:
+        input_df[feature] = 0
 
     # Ensure correct column order
     input_df = input_df[feature_names]
@@ -73,6 +74,12 @@ def app():
     if st.button("Predict Price"):
         try:
             predicted_price = model.predict(input_df)[0]
+
+            # Check if model output is log-transformed and adjust accordingly
+            if predicted_price < 10:  # Assumption that log-transformed values are low
+                predicted_price = np.exp(predicted_price)
+
             st.success(f"Predicted House Price: ${predicted_price:,.2f}")
         except Exception as e:
             st.error(f"Prediction failed: {str(e)}")
+
