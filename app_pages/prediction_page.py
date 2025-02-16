@@ -1,31 +1,25 @@
 import streamlit as st
-import pickle
 import pandas as pd
+import pickle
 
-st.title("🏡 House Price Prediction")
+def app():
+    st.title("Prediction Page")
 
-# Load the trained model
-@st.cache_data
-def load_model():
-    with open("./models/final_model.pkl", "rb") as file:
+    # Load trained model
+    with open("../models/trained_model.pkl", "rb") as file:
         model = pickle.load(file)
-    return model
 
-model = load_model()
+    # Get feature names
+    data = pd.read_csv("../data/processed_train.csv")
+    features = data.drop(columns=["SalePrice"]).columns.tolist()
 
-# User input fields
-st.subheader("Enter house details to predict price")
+    # User input
+    user_input = {}
+    for feature in features[:10]:  # Limiting to first 10 features for simplicity
+        user_input[feature] = st.number_input(f"{feature}", value=0)
 
-# Example input fields (customize as per your dataset)
-overall_qual = st.number_input("Overall Quality", min_value=1, max_value=10, value=5)
-gr_liv_area = st.number_input("Ground Living Area (sqft)", min_value=500, max_value=5000, value=1500)
-garage_cars = st.number_input("Garage Cars", min_value=0, max_value=5, value=2)
-total_bsmt_sf = st.number_input("Total Basement Area (sqft)", min_value=0, max_value=3000, value=800)
-
-# Make prediction
-if st.button("Predict Price"):
-    input_data = pd.DataFrame([[overall_qual, gr_liv_area, garage_cars, total_bsmt_sf]],
-                              columns=["OverallQual", "GrLivArea", "GarageCars", "TotalBsmtSF"])
-    
-    predicted_price = model.predict(input_data)
-    st.success(f"🏠 Estimated House Price: ${predicted_price[0]:,.2f}")
+    # Predict button
+    if st.button("Predict Price"):
+        input_df = pd.DataFrame([user_input])
+        predicted_price = model.predict(input_df)[0]
+        st.success(f"Predicted House Price: ${predicted_price:,.2f}")

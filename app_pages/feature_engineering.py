@@ -1,16 +1,16 @@
 import streamlit as st
+import pandas as pd
 
-st.title("Feature Engineering")
+def app():
+    st.title("Feature Engineering")
 
-st.write("This page is used to create and transform features to improve model performance.")
+    # Load cleaned data
+    data = pd.read_csv("../data/final_cleaned_train.csv")
 
-# Example: Display feature engineering techniques
-st.subheader("Feature Engineering Techniques")
-st.write("- Handling missing values")
-st.write("- Creating new features")
-st.write("- Encoding categorical variables")
-st.write("- Normalization & Standardization")
+    # Example transformation: Creating new feature
+    data["TotalSF"] = data["TotalBsmtSF"] + data["1stFlrSF"] + data["2ndFlrSF"]
 
-# Example: Placeholder for applying transformations
-if st.button("Apply Feature Engineering"):
-    st.write("Applying transformations... (Placeholder for actual feature engineering steps)")
+    # Save processed data
+    data.to_csv("../data/processed_train.csv", index=False)
+
+    st.write("Feature Engineering Complete and Saved.")
