@@ -1,12 +1,13 @@
 import streamlit as st
+
+
+st.set_page_config(page_title="Housing Price Prediction", layout="wide")
+
 from app_pages import (
-    home_page, correlation_study, data_cleaning, 
+    home_page, correlation_study, data_cleaning,
     feature_engineering, model_training, model_evaluation,
     hyperparameter_tuning, feature_importance, final_model, deployment, prediction_page
 )
-
-# Set page configuration
-st.set_page_config(page_title="Housing Price Prediction", layout="wide")
 
 # Sidebar navigation
 PAGES = {
