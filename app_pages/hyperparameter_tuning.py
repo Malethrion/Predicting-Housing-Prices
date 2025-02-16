@@ -1,16 +1,22 @@
 import streamlit as st
+import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import GridSearchCV
 
 def app():
-st.title("Hyperparameter Tuning")
+    st.title("Hyperparameter Tuning")
 
-st.write("Optimize your model performance by fine-tuning hyperparameters.")
+    # Load dataset
+    data = pd.read_csv("../data/processed_train.csv")
+    X = data.drop(columns=["SalePrice"])
+    y = data["SalePrice"]
 
-# Example: Display available tuning methods
-st.subheader("Tuning Techniques")
-st.write("- Grid Search")
-st.write("- Random Search")
-st.write("- Bayesian Optimization")
+    # Define grid search parameters
+    param_grid = {"n_estimators": [50, 100, 200], "max_depth": [10, 20, 30]}
 
-# Example: Add a placeholder for tuning process
-if st.button("Start Tuning"):
-    st.write("Tuning model... (Placeholder for actual tuning process)")
+    # Perform grid search
+    model = RandomForestRegressor(random_state=42)
+    grid_search = GridSearchCV(model, param_grid, cv=3)
+    grid_search.fit(X, y)
+
+    st.write(f"Best parameters: {grid_search.best_params_}")
