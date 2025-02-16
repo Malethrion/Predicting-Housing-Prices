@@ -1,55 +1,71 @@
-import streamlit as st
 import pandas as pd
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-import pickle
-import os
 import numpy as np
+import os
+import pickle
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.preprocessing import StandardScaler
 
-def app():
-    st.title("Model Training")
+# Load the processed dataset
+data = pd.read_csv("../data/processed_train.csv")
 
-    # Load processed data
-    data_path = "data/processed_train.csv"
-    if not os.path.exists(data_path):
-        st.error(f"File not found: {data_path}. Please ensure preprocessing is completed.")
-        return
+# Define target variable
+target = "SalePrice"
 
-    data = pd.read_csv(data_path)
+# Debugging: Check for negative or zero values before transformation
+print(f"Total rows before filtering: {len(data)}")
+print(f"Rows with SalePrice <= 0: {len(data[data[target] <= 0])}")
+print(f"Rows with NaN in SalePrice: {data[target].isnull().sum()}")
 
-    # Remove rows where SalePrice is zero or negative before log transformation
-    data = data[data["SalePrice"] > 0]
+# Remove rows with zero or negative SalePrice
+data = data[data[target] > 0]
 
-    # Apply log transformation
-    y = np.log(data["SalePrice"])
-    X = data.drop(columns=["SalePrice"])
+# Apply log transformation
+data[target] = np.log(data[target])
 
-    # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Drop any remaining NaN values from the dataset
+data = data.dropna()
 
-    # Feature Scaling
-    scaler = StandardScaler()
-    X_train_scaled = scaler.fit_transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
+# Debugging: Check again for any NaN values after transformation
+print(f"Total rows after filtering: {len(data)}")
+print(f"Missing values in SalePrice after dropna: {data[target].isnull().sum()}")
 
-    # Train model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train_scaled, y_train)
+# Separate features (X) and target (y)
+X = data.drop(columns=[target])
+y = data[target]
 
-    # Ensure model directory exists
-    model_dir = "models"
-    os.makedirs(model_dir, exist_ok=True)
+# Verify there are no NaN values before splitting
+print(f"Missing values in X: {X.isnull().sum().sum()}")
+print(f"Missing values in y: {y.isnull().sum()}")
 
-    # Save model, feature names, and scaler
-    with open(f"{model_dir}/trained_model.pkl", "wb") as f:
-        pickle.dump(model, f)
-    
-    with open(f"{model_dir}/feature_names.pkl", "wb") as f:
-        pickle.dump(X_train.columns.tolist(), f)
+# Split dataset into training and testing sets (80% train, 20% test)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    with open(f"{model_dir}/scaler.pkl", "wb") as f:
-        pickle.dump(scaler, f)
+# Final check before training
+print(f"Missing values in y_train: {y_train.isnull().sum()}")
 
-    st.write("Model training completed. Saved model, feature names, and scaler.")
+# Scale features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
+# Train the model
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train_scaled, y_train)
+
+# Ensure models directory exists
+os.makedirs("../models", exist_ok=True)
+
+# Save the trained model
+with open("../models/trained_model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
+# Save feature names
+with open("../models/feature_names.pkl", "wb") as f:
+    pickle.dump(X_train.columns.tolist(), f)
+
+# Save the scaler
+with open("../models/scaler.pkl", "wb") as f:
+    pickle.dump(scaler, f)
+
+print("Trained model, feature names, and scaler saved successfully!")

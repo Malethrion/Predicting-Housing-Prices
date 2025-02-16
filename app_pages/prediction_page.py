@@ -1,95 +1,57 @@
 import streamlit as st
-import pandas as pd
 import pickle
-import os
 import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
 
-def app():
-    st.title("House Price Prediction")
+# Load trained model and scaler
+with open("../models/trained_model.pkl", "rb") as f:
+    model = pickle.load(f)
 
-    model_path = "models/trained_model.pkl"
-    feature_path = "models/feature_names.pkl"
-    scaler_path = "models/scaler.pkl"
+with open("../models/feature_names.pkl", "rb") as f:
+    feature_names = pickle.load(f)
 
-    # Ensure model and feature files exist
-    if not os.path.exists(model_path) or not os.path.exists(feature_path) or not os.path.exists(scaler_path):
-        st.error("Model, scaler, or feature file not found. Please train the model first.")
-        return
+with open("../models/scaler.pkl", "rb") as f:
+    scaler = pickle.load(f)
 
-    # Load trained model
-    with open(model_path, "rb") as file:
-        model = pickle.load(file)
+def predict_price(features):
+    """
+    Takes user input as a dictionary and predicts house price.
+    """
+    # Convert input dictionary to dataframe
+    input_df = pd.DataFrame([features])
 
-    # Load feature names
-    with open(feature_path, "rb") as file:
-        feature_names = pickle.load(file)
+    # Ensure the input has all necessary features
+    for feature in feature_names:
+        if feature not in input_df:
+            input_df[feature] = 0  # Initialize missing columns
 
-    # Load scaler
-    with open(scaler_path, "rb") as file:
-        scaler = pickle.load(file)
-
-    # Features for user input
-    selected_features = ["GrLivArea", "OverallQual", "GarageCars", "YearBuilt", "TotalBsmtSF"]
-
-    st.subheader("Enter House Features")
-
-    user_input = {}
-    for feature in selected_features:
-        default_values = {
-            "GrLivArea": 1500,
-            "OverallQual": 5,
-            "GarageCars": 2,
-            "YearBuilt": 2000,
-            "TotalBsmtSF": 1000,
-        }
-        min_values = {
-            "GrLivArea": 500,
-            "OverallQual": 1,
-            "GarageCars": 0,
-            "YearBuilt": 1800,
-            "TotalBsmtSF": 0,
-        }
-        max_values = {
-            "GrLivArea": 5000,
-            "OverallQual": 10,
-            "GarageCars": 4,
-            "YearBuilt": 2023,
-            "TotalBsmtSF": 3000,
-        }
-
-        user_input[feature] = st.number_input(
-            f"{feature}", 
-            min_value=min_values[feature], 
-            max_value=max_values[feature], 
-            value=default_values[feature]
-        )
-
-    # Convert input to DataFrame
-    input_df = pd.DataFrame([user_input])
-
-    # Ensure the input has the same features as the model
-    missing_features = set(feature_names) - set(input_df.columns)
-
-    # Create a DataFrame with missing columns set to zero
-    missing_df = pd.DataFrame(0, index=input_df.index, columns=list(missing_features))
-
-    # Efficiently concatenate original input and missing features
-    input_df = pd.concat([input_df, missing_df], axis=1)
-
-    # Ensure correct column order
+    # Align columns to match training data
     input_df = input_df[feature_names]
 
-    # Apply the same scaling as training
+    # Scale input data
     input_scaled = scaler.transform(input_df)
 
-    # Predict button
+    # Predict and transform back from log scale
+    log_price = model.predict(input_scaled)
+    predicted_price = np.exp(log_price)  # Convert log price back to normal scale
+
+    return predicted_price[0]
+
+# Streamlit UI
+def app():
+    st.title("Enter House Features")
+
+    # Create input fields for user
+    features = {
+        "GrLivArea": st.number_input("GrLivArea", value=1500),
+        "OverallQual": st.number_input("OverallQual", value=5),
+        "GarageCars": st.number_input("GarageCars", value=2),
+        "YearBuilt": st.number_input("YearBuilt", value=2000),
+        "TotalBsmtSF": st.number_input("TotalBsmtSF", value=1000),
+    }
+
     if st.button("Predict Price"):
-        try:
-            predicted_price = model.predict(input_scaled)[0]
+        price = predict_price(features)
+        st.success(f"Predicted House Price: ${price:,.2f}")
 
-            # Apply inverse transformation if needed
-            predicted_price = np.exp(predicted_price)
-
-            st.success(f"Predicted House Price: ${predicted_price:,.2f}")
-        except Exception as e:
-            st.error(f"Prediction failed: {str(e)}")
