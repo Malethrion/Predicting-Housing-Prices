@@ -15,8 +15,13 @@ def app():
     with open("models/trained_model.pkl", "rb") as f:
         model = pickle.load(f)
 
-    # Predictions
+    # Ensure the evaluation data has the same features as training
+    trained_features = model.feature_names_in_  # Get feature names used during training
+    X = X[trained_features]  # Keep only the trained feature set
+
+    # Predict using the model
     y_pred = model.predict(X)
+
 
     # Compute metrics
     st.write(f"Mean Absolute Error: {mean_absolute_error(y, y_pred)}")

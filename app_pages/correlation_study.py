@@ -23,5 +23,8 @@ def app():
     st.write("### Correlation Heatmap")
     plt.figure(figsize=(12, 8))
     sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm")
-    st.pyplot()
+    fig, ax = plt.subplots(figsize=(12, 8))
+    sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
+    st.pyplot(fig)
+
 

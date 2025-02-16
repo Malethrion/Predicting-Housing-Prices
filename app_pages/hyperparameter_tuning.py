@@ -7,7 +7,7 @@ def app():
     st.title("Hyperparameter Tuning")
 
     # Load dataset
-    data = pd.read_csv("../data/processed_train.csv")
+    data = pd.read_csv("data/processed_train.csv")
     X = data.drop(columns=["SalePrice"])
     y = data["SalePrice"]
 

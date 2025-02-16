@@ -18,4 +18,10 @@ def app():
     plt.barh(range(len(feature_importance)), feature_importance)
     plt.xlabel("Importance")
     plt.ylabel("Feature Index")
-    st.pyplot()
+    fig, ax = plt.subplots(figsize=(10, 5))
+    ax.bar(range(len(feature_importance)), feature_importance)
+    ax.set_xlabel("Feature Index")
+    ax.set_ylabel("Importance")
+    st.pyplot(fig)
+
+
