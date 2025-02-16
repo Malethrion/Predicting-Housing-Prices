@@ -69,8 +69,12 @@ def app():
 
     # Ensure the input has the same features as the model
     missing_features = set(feature_names) - set(input_df.columns)
-    for feature in missing_features:
-        input_df[feature] = 0
+
+    # Create a DataFrame with missing columns set to zero
+    missing_df = pd.DataFrame(0, index=input_df.index, columns=list(missing_features))
+
+    # Efficiently concatenate original input and missing features
+    input_df = pd.concat([input_df, missing_df], axis=1)
 
     # Ensure correct column order
     input_df = input_df[feature_names]
