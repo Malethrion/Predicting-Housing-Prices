@@ -1,58 +1,54 @@
 import streamlit as st
+import pickle
 import pandas as pd
 import numpy as np
-import os
-import pickle
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-def app():
-    st.title("Model Training")
-    st.write("Training the model and saving it for predictions.")
+# Load model and necessary data
+with open("../models/trained_model.pkl", "rb") as f:
+    model = pickle.load(f)
 
-    # Load dataset
-    data_path = "data/processed_train.csv"
-    data = pd.read_csv(data_path)
+with open("../models/feature_names.pkl", "rb") as f:
+    feature_names = pickle.load(f)
 
-    # Define target variable
-    target = "SalePrice"
+with open("../models/scaler.pkl", "rb") as f:
+    scaler = pickle.load(f)
 
-    # Ensure SalePrice has only positive values before log transformation
-    data = data[data[target] > 0]  # Remove rows with zero or negative SalePrice
+# Load test data
+test_data = pd.read_csv("../data/processed_train.csv")
 
-    # Apply log transformation
-    data[target] = np.log(data[target])
+# Define target variable
+target = "SalePrice"
 
-    # Drop any remaining NaN values from features and target
-    data = data.dropna()
+# Ensure no NaN values in the dataset
+test_data = test_data.dropna()
 
-    # Separate features (X) and target (y)
-    X = data.drop(columns=[target])
-    y = data[target]
+# Separate features and target
+X_test = test_data.drop(columns=[target])
+y_actual = test_data[target]
 
-    # Split dataset into training and testing sets (80% train, 20% test)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Ensure feature alignment
+X_test = X_test[feature_names]
 
-    # Initialize and train model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
-    model.fit(X_train, y_train)
+# Apply scaler transformation if necessary
+X_test_scaled = scaler.transform(X_test)
 
-    # Save the trained model and necessary metadata
-    os.makedirs("models", exist_ok=True)
+# Make predictions
+y_pred = model.predict(X_test_scaled)
 
-    with open("models/trained_model.pkl", "wb") as f:
-        pickle.dump(model, f)
+# Ensure no NaN values exist before computing metrics
+if np.isnan(y_actual).sum() == 0 and np.isnan(y_pred).sum() == 0:
+    mae = mean_absolute_error(y_actual, y_pred)
+    mse = mean_squared_error(y_actual, y_pred)
+    r2 = r2_score(y_actual, y_pred)
+else:
+    mae, mse, r2 = "Error: NaN values detected in evaluation", "Error", "Error"
 
-    with open("models/feature_names.pkl", "wb") as f:
-        pickle.dump(X_train.columns.tolist(), f)
+# Streamlit UI
+st.title("Model Evaluation")
+st.write("Evaluation metrics for the trained model.")
 
-    # Save the scaler
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-
-    with open("models/scaler.pkl", "wb") as f:
-        pickle.dump(scaler, f)
-
-    st.success("Model training completed. Saved model, feature names, and scaler.")
+st.metric("Mean Absolute Error (MAE)", mae)
+st.metric("Mean Squared Error (MSE)", mse)
+st.metric("R-squared Score", r2)
 
