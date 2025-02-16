@@ -9,10 +9,11 @@ def app():
 
     model_path = "models/trained_model.pkl"
     feature_path = "models/feature_names.pkl"
+    scaler_path = "models/scaler.pkl"
 
-    # Ensure model and feature file exist
-    if not os.path.exists(model_path) or not os.path.exists(feature_path):
-        st.error("Model or feature file not found. Please train the model first.")
+    # Ensure model and feature files exist
+    if not os.path.exists(model_path) or not os.path.exists(feature_path) or not os.path.exists(scaler_path):
+        st.error("Model, scaler, or feature file not found. Please train the model first.")
         return
 
     # Load trained model
@@ -22,6 +23,10 @@ def app():
     # Load feature names
     with open(feature_path, "rb") as file:
         feature_names = pickle.load(file)
+
+    # Load scaler
+    with open(scaler_path, "rb") as file:
+        scaler = pickle.load(file)
 
     # Features for user input
     selected_features = ["GrLivArea", "OverallQual", "GarageCars", "YearBuilt", "TotalBsmtSF"]
@@ -70,16 +75,17 @@ def app():
     # Ensure correct column order
     input_df = input_df[feature_names]
 
+    # Apply the same scaling as training
+    input_scaled = scaler.transform(input_df)
+
     # Predict button
     if st.button("Predict Price"):
         try:
-            predicted_price = model.predict(input_df)[0]
+            predicted_price = model.predict(input_scaled)[0]
 
-            # Check if model output is log-transformed and adjust accordingly
-            if predicted_price < 10:  # Assumption that log-transformed values are low
-                predicted_price = np.exp(predicted_price)
+            # Apply inverse transformation if needed
+            predicted_price = np.exp(predicted_price)
 
             st.success(f"Predicted House Price: ${predicted_price:,.2f}")
         except Exception as e:
             st.error(f"Prediction failed: {str(e)}")
-
