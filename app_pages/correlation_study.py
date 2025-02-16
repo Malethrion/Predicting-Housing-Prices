@@ -8,12 +8,12 @@ def app():
     
     # Load dataset
     data = pd.read_csv("../data/final_cleaned_train.csv")
-
+    
     # Compute correlation matrix
     correlation_matrix = data.corr()
 
-    # Display heatmap
-    st.markdown("### Correlation Heatmap")
-    plt.figure(figsize=(10, 6))
+    # Plot heatmap
+    st.write("### Correlation Heatmap")
+    plt.figure(figsize=(12, 8))
     sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm")
     st.pyplot()
