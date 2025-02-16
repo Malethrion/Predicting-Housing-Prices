@@ -5,15 +5,15 @@ import matplotlib.pyplot as plt
 
 def app():
     st.title("Correlation Study")
-    st.write("This section analyzes correlations between housing features and sale price.")
-
+    
     # Load dataset
-    data = pd.read_csv("data/train.csv")
+    data = pd.read_csv("../data/final_cleaned_train.csv")
 
     # Compute correlation matrix
     correlation_matrix = data.corr()
 
     # Display heatmap
-    plt.figure(figsize=(12, 8))
-    sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
+    st.markdown("### Correlation Heatmap")
+    plt.figure(figsize=(10, 6))
+    sns.heatmap(correlation_matrix, annot=False, cmap="coolwarm")
     st.pyplot()
