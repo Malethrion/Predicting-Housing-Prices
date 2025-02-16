@@ -19,9 +19,11 @@ def app():
     model = RandomForestRegressor(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
 
-    # Save model
+    # Save model and feature names
     with open("models/trained_model.pkl", "wb") as f:
         pickle.dump(model, f)
+    
+    with open("models/feature_names.pkl", "wb") as f:
+        pickle.dump(X_train.columns.tolist(), f)
 
-    st.write("Model training completed. Saved model to 'trained_model.pkl'.")
-
+    st.write("Model training completed. Saved model and feature names.")
