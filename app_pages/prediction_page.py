@@ -9,19 +9,22 @@ def app():
     with open("models/trained_model.pkl", "rb") as file:
         model = pickle.load(file)
 
-    # Load feature names
-    with open("models/feature_names.pkl", "rb") as f:
-        trained_features = pickle.load(f)
+    # Load processed data to get feature names
+    data = pd.read_csv("data/processed_train.csv")
+    features = data.drop(columns=["SalePrice"]).columns.tolist()
 
-    # User input
-    user_input = {feature: st.number_input(f"{feature}", value=0) for feature in trained_features}
+    # Select key features for user input
+    selected_features = ["GrLivArea", "OverallQual", "GarageCars", "YearBuilt", "TotalBsmtSF"]
+
+    st.write("### Enter House Features")
+
+    user_input = {}
+    for feature in selected_features:
+        user_input[feature] = st.number_input(f"{feature}", value=float(data[feature].median()))
 
     # Predict button
     if st.button("Predict Price"):
         input_df = pd.DataFrame([user_input])
-
-        # Ensure input matches trained model feature order
-        input_df = input_df.reindex(columns=trained_features, fill_value=0)
-
         predicted_price = model.predict(input_df)[0]
         st.success(f"Predicted House Price: ${predicted_price:,.2f}")
+
