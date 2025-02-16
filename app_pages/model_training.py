@@ -17,8 +17,13 @@ def app():
         return
 
     data = pd.read_csv(data_path)
+
+    # Remove rows where SalePrice is zero or negative before log transformation
+    data = data[data["SalePrice"] > 0]
+
+    # Apply log transformation
+    y = np.log(data["SalePrice"])
     X = data.drop(columns=["SalePrice"])
-    y = np.log(data["SalePrice"])  # Apply log transformation
 
     # Train-test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -47,3 +52,4 @@ def app():
         pickle.dump(scaler, f)
 
     st.write("Model training completed. Saved model, feature names, and scaler.")
+
