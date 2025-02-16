@@ -1,5 +1,6 @@
 import streamlit as st
 
+def app():
 st.title("Final Model Selection")
 
 st.write("Choose the best-performing model for deployment.")

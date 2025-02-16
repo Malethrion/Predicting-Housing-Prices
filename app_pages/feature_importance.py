@@ -1,5 +1,6 @@
 import streamlit as st
 
+def app():
 st.title("Feature Importance")
 
 st.write("Analyze which features contribute the most to the prediction.")

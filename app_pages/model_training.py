@@ -8,7 +8,7 @@ def app():
     st.title("Model Training")
 
     # Load dataset
-    data = pd.read_csv("../data/processed_train.csv")
+    data = pd.read_csv("data/processed_train.csv")
     target = "SalePrice"
 
     X = data.drop(columns=[target])

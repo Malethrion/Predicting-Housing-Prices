@@ -1,5 +1,6 @@
 import streamlit as st
 
+def app():
 st.title("Hyperparameter Tuning")
 
 st.write("Optimize your model performance by fine-tuning hyperparameters.")

@@ -8,7 +8,7 @@ def app():
     st.write("This section analyzes correlations between housing features and sale price.")
 
     # Load dataset
-    data = pd.read_csv("../data/train.csv")
+    data = pd.read_csv("data/train.csv")
 
     # Compute correlation matrix
     correlation_matrix = data.corr()

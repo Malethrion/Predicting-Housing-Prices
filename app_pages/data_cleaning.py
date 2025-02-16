@@ -5,7 +5,7 @@ def app():
     st.title("Data Cleaning")
 
     # Load dataset
-    data = pd.read_csv("../data/train.csv")
+    data = pd.read_csv("data/train.csv")
 
     # Handle missing values
     numeric_cols = data.select_dtypes(include=['number']).columns
@@ -16,6 +16,6 @@ def app():
         data[col] = data[col].fillna(data[col].mode()[0])
 
     # Save cleaned data
-    data.to_csv("../data/final_cleaned_train.csv", index=False)
+    data.to_csv("data/final_cleaned_train.csv", index=False)
 
     st.write("Data Cleaning Complete and Saved.")
