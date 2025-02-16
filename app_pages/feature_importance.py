@@ -1,20 +1,21 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import pickle
+import matplotlib.pyplot as plt
 
 def app():
     st.title("Feature Importance")
 
     # Load model
-    with open("../models/trained_model.pkl", "rb") as file:
-        model = pickle.load(file)
+    with open("../models/trained_model.pkl", "rb") as f:
+        model = pickle.load(f)
 
-    # Load dataset
-    data = pd.read_csv("../data/processed_train.csv")
-    feature_names = data.drop(columns=["SalePrice"]).columns
+    # Get feature importance
+    feature_importance = model.feature_importances_
 
-    # Plot importance
+    # Plot feature importance
     plt.figure(figsize=(10, 5))
-    plt.barh(feature_names, model.feature_importances_)
+    plt.barh(range(len(feature_importance)), feature_importance)
+    plt.xlabel("Importance")
+    plt.ylabel("Feature Index")
     st.pyplot()
