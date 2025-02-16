@@ -1,18 +1,29 @@
 import streamlit as st
+import pandas as pd
+import pickle
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 def app():
-    st.title("Model Evaluation")  # ✅ Indented correctly
-    st.write("Evaluate the trained models and compare their performance.")
+    st.title("Model Evaluation")
 
+    # Load trained model
+    with open("../models/trained_model.pkl", "rb") as file:
+        model = pickle.load(file)
 
-    st.write("Evaluate the trained models and compare their performance.")
+    # Load test data
+    data = pd.read_csv("../data/processed_train.csv")
+    X = data.drop(columns=["SalePrice"])
+    y = data["SalePrice"]
 
-    # Example: Display available evaluation metrics
-    st.subheader("Evaluation Metrics")
-    st.write("- Mean Absolute Error (MAE)")
-    st.write("- Root Mean Squared Error (RMSE)")
-    st.write("- R² Score")
+    # Make predictions
+    y_pred = model.predict(X)
 
-    # Example: Add a placeholder for results (replace with real evaluation)
-    if st.button("Run Evaluation"):
-       st.write("Evaluating model... (Placeholder for actual evaluation results)")
+    # Compute metrics
+    mae = mean_absolute_error(y, y_pred)
+    mse = mean_squared_error(y, y_pred)
+    r2 = r2_score(y, y_pred)
+
+    st.write(f"MAE: {mae}")
+    st.write(f"MSE: {mse}")
+    st.write(f"R² Score: {r2}")
+
