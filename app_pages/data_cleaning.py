@@ -13,8 +13,13 @@ def app():
     # Load dataset
     data = pd.read_csv(data_path)
 
-    # Handle missing values
-    data.fillna(data.mean(), inplace=True)
+    # Identify numerical and categorical columns
+    numeric_columns = data.select_dtypes(include=['int64', 'float64']).columns
+    categorical_columns = data.select_dtypes(include=['object']).columns
+
+    # Fill missing values separately for numeric and categorical data
+    data[numeric_columns] = data[numeric_columns].fillna(data[numeric_columns].mean())
+    data[categorical_columns] = data[categorical_columns].fillna(data[categorical_columns].mode().iloc[0])
 
     # Save cleaned dataset
     cleaned_data_path = "data/final_cleaned_train.csv"
