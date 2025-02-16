@@ -5,14 +5,14 @@ import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 # Load model and test data
-with open("../models/trained_model.pkl", "rb") as f:
+with open("models/trained_model.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open("../models/scaler.pkl", "rb") as f:
+with open("models/scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
 
 # Load test data
-data = pd.read_csv("../data/processed_train.csv")
+data = pd.read_csv("data/processed_train.csv")
 target = "SalePrice"
 X = data.drop(columns=[target])
 y = np.log(data[target])  # Apply log transformation to match training

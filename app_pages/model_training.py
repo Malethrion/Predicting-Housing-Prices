@@ -7,7 +7,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
 
 # Load the processed dataset
-data = pd.read_csv("../data/processed_train.csv")
+data = pd.read_csv("data/processed_train.csv")
 
 # Define target variable
 target = "SalePrice"
@@ -54,18 +54,18 @@ model = RandomForestRegressor(n_estimators=100, random_state=42)
 model.fit(X_train_scaled, y_train)
 
 # Ensure models directory exists
-os.makedirs("../models", exist_ok=True)
+os.makedirs("models", exist_ok=True)
 
 # Save the trained model
-with open("../models/trained_model.pkl", "wb") as f:
+with open("models/trained_model.pkl", "wb") as f:
     pickle.dump(model, f)
 
 # Save feature names
-with open("../models/feature_names.pkl", "wb") as f:
+with open("models/feature_names.pkl", "wb") as f:
     pickle.dump(X_train.columns.tolist(), f)
 
 # Save the scaler
-with open("../models/scaler.pkl", "wb") as f:
+with open("models/scaler.pkl", "wb") as f:
     pickle.dump(scaler, f)
 
 print("Trained model, feature names, and scaler saved successfully!")

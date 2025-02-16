@@ -5,13 +5,13 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
 # Load trained model and scaler
-with open("../models/trained_model.pkl", "rb") as f:
+with open("models/trained_model.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open("../models/feature_names.pkl", "rb") as f:
+with open("models/feature_names.pkl", "rb") as f:
     feature_names = pickle.load(f)
 
-with open("../models/scaler.pkl", "rb") as f:
+with open("models/scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
 
 def predict_price(features):
