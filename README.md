@@ -158,6 +158,31 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 
 [Back to top](#table-of-contents)
 
+## Testing
+
+### Manual Testing
+
+| Feature | Action | Expected Result | Actual Result |
+| --- | --- | --- | --- |
+| Project summary page | Viewing summary page | Page loads and sections are accessible | Functions as intended |
+| Prediction page | Input features | Model predicts house price | Functions as intended |
+
+[Back to top](#table-of-contents)
+
+## Unfixed Bugs
+* At the time of writing, no unfixed bugs have been reported.
+
+[Back to top](#table-of-contents)
+
+## Deployment
+
+The project was deployed to Heroku. For deployment instructions, follow these steps:
+
+1. Clone the repository and install dependencies.
+2. Set up your environment and deploy using the provided steps.
+
+[Back to top](#table-of-contents)
+
 
 ## Live Link:
 https://predicting-housing-prices.onrender.com
