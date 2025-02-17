@@ -20,14 +20,14 @@ def predict_price(features):
     # Convert input dictionary to dataframe
     input_df = pd.DataFrame([features])
 
-    # Create missing columns as a separate DataFrame
+    # Ensure all required columns are present
     missing_cols = {col: 0 for col in feature_names if col not in input_df}
     missing_df = pd.DataFrame([missing_cols])
 
-    # Concatenate the dataframes in one step to prevent fragmentation
+    # Concatenate user input with missing columns
     input_df = pd.concat([input_df, missing_df], axis=1)
 
-    # Align columns to match training data
+    # Ensure correct column order
     input_df = input_df[feature_names]
 
     # Scale input data
@@ -35,24 +35,24 @@ def predict_price(features):
 
     # Predict and transform back from log scale
     log_price = model.predict(input_scaled)
-    
-    # DEBUG: Print the raw log predictions
+
+    # Debugging: Print the raw log predictions
     st.write(f"Log Price Prediction: {log_price}")
 
-    predicted_price = np.exp(log_price)  # Convert log price back to normal scale
+    # Convert from log1p to normal scale
+    predicted_price = np.expm1(log_price)
 
-    # DEBUG: Print the final predicted price
+    # Debugging: Print the final predicted price
     st.write(f"Final Predicted Price: {predicted_price}")
 
     return predicted_price[0]
-
 
 # Streamlit UI
 def app():
     st.title("Enter House Features")
     st.write("### Enter house features below to predict the price.")
 
-    # Create input fields for user (Kept as per your request)
+    # Create input fields for user
     features = {
         "GrLivArea": st.number_input("GrLivArea", value=1500),
         "OverallQual": st.number_input("OverallQual", value=5),
@@ -64,3 +64,4 @@ def app():
     if st.button("Predict Price"):
         price = predict_price(features)
         st.success(f"Predicted House Price: ${price:,.2f}")
+
