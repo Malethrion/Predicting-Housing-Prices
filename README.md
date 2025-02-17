@@ -92,6 +92,31 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 
 [Back to top](#table-of-contents)
 
+## Epics and User Stories
+
+### Epic - Information Gathering and Data Collection
+* **User Story**: As a data analyst, I can import the dataset from Kaggle and save it locally for analysis.
+* **User Story**: As a data analyst, I can load the saved dataset for further exploration and analysis.
+
+### Epic - Data Visualization, Cleaning, and Preparation
+* **User Story**: As a data scientist, I can visualize the dataset and identify which features most strongly correlate with house prices (**Business Requirement 1**).
+* **User Story**: As a data analyst, I can clean the dataset and handle any missing or outlier values.
+* **User Story**: As a data scientist, I can carry out feature engineering to transform the data for optimal use in the ML model.
+
+### Epic - Model Training, Optimization, and Validation
+* **User Story**: As a data engineer, I can train the regression model using a train-test split.
+* **User Story**: As a data scientist, I can optimize hyperparameters for the best model performance.
+* **User Story**: As a data scientist, I can evaluate model performance to determine if it successfully predicts house prices.
+
+### Epic - Dashboard Planning, Designing, and Development
+* **User Story**: As a non-technical user, I can input features (e.g., square footage, number of bedrooms) and get a predicted house price.
+* **User Story**: As a non-technical user, I can view a summary of the project's business case and conclusions.
+
+### Epic - Dashboard Deployment and Release
+* **User Story**: As a user, I can interact with the dashboard and see live predictions and analysis.
+
+[Back to top](#table-of-contents)
+
 
 ## Live Link:
 https://predicting-housing-prices.onrender.com
