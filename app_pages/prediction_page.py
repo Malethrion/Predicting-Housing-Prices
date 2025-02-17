@@ -35,9 +35,17 @@ def predict_price(features):
 
     # Predict and transform back from log scale
     log_price = model.predict(input_scaled)
+    
+    # DEBUG: Print the raw log predictions
+    st.write(f"Log Price Prediction: {log_price}")
+
     predicted_price = np.exp(log_price)  # Convert log price back to normal scale
 
+    # DEBUG: Print the final predicted price
+    st.write(f"Final Predicted Price: {predicted_price}")
+
     return predicted_price[0]
+
 
 # Streamlit UI
 def app():
