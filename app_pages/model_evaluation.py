@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# Load model and test data
+# Load trained model and scaler
 with open("models/trained_model.pkl", "rb") as f:
     model = pickle.load(f)
 
@@ -33,13 +33,21 @@ mse = mean_squared_error(y_actual, y_pred)
 r2 = r2_score(y_actual, y_pred)
 
 def app():
+    """Streamlit UI for model evaluation."""
     st.title("Model Evaluation")
-
     st.write("### Model Performance Metrics")
-    st.write(f"**Mean Absolute Error (MAE):** {mae:,.2f}")
-    st.write(f"**Mean Squared Error (MSE):** {mse:,.2f}")
-    st.write(f"**R-squared Score (R²):** {r2:.4f}")
 
+    # Displaying the metrics with appropriate formatting
+    st.metric(label="Mean Absolute Error (MAE)", value=f"{mae:,.2f}")
+    st.metric(label="Mean Squared Error (MSE)", value=f"{mse:,.2f}")
+    st.metric(label="R-squared Score (R²)", value=f"{r2:.4f}")
+
+    # Dataframe for actual vs predicted values
     st.write("### Predictions vs. Actual")
     comparison_df = pd.DataFrame({"Actual Price": y_actual, "Predicted Price": y_pred})
-    st.write(comparison_df.sample(10))  # Show random 10 samples
+    st.dataframe(comparison_df.sample(10))  # Display a sample of 10
+
+    # Display a warning if the model is performing poorly
+    if r2 < 0:
+        st.warning("The model performance is low. Consider improving feature selection or transformations.")
+

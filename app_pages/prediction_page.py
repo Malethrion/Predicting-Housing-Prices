@@ -40,7 +40,9 @@ def predict_price(features):
 
 # Streamlit UI
 def app():
-    st.title("Enter House Features")
+    """Streamlit UI for user input and price prediction."""
+    st.title("House Price Prediction")
+    st.write("Enter house features below to predict the price.")
 
     # Create input fields for user
     features = {

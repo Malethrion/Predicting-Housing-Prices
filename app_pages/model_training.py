@@ -5,17 +5,17 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 # Load model and necessary data
-with open("../models/trained_model.pkl", "rb") as f:
+with open("models/trained_model.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open("../models/feature_names.pkl", "rb") as f:
+with open("models/feature_names.pkl", "rb") as f:
     feature_names = pickle.load(f)
 
-with open("../models/scaler.pkl", "rb") as f:
+with open("models/scaler.pkl", "rb") as f:
     scaler = pickle.load(f)
 
 # Load test data
-test_data = pd.read_csv("../data/processed_train.csv")
+test_data = pd.read_csv("data/processed_train.csv")
 
 # Define target variable
 target = "SalePrice"
@@ -51,4 +51,5 @@ st.write("Evaluation metrics for the trained model.")
 st.metric("Mean Absolute Error (MAE)", mae)
 st.metric("Mean Squared Error (MSE)", mse)
 st.metric("R-squared Score", r2)
+
 
