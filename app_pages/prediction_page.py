@@ -20,9 +20,12 @@ def predict_price(features):
     # Convert input dictionary to dataframe
     input_df = pd.DataFrame([features])
 
-    # Add missing columns all at once
+    # Create missing columns as a separate DataFrame
     missing_cols = {col: 0 for col in feature_names if col not in input_df}
-    input_df = input_df.assign(**missing_cols)  # Efficiently add missing columns
+    missing_df = pd.DataFrame([missing_cols])
+
+    # Concatenate the dataframes in one step to prevent fragmentation
+    input_df = pd.concat([input_df, missing_df], axis=1)
 
     # Align columns to match training data
     input_df = input_df[feature_names]
@@ -53,4 +56,3 @@ def app():
     if st.button("Predict Price"):
         price = predict_price(features)
         st.success(f"Predicted House Price: ${price:,.2f}")
-
