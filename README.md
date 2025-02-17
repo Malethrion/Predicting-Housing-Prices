@@ -39,6 +39,31 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 
 [Back to top](#table-of-contents)
 
+## Business Requirements
+
+* Real estate businesses need to predict housing prices based on historical data and various house attributes.
+* **Business Requirement 1**: Real estate businesses want to understand which features most strongly influence house pricing.
+* **Business Requirement 2**: Predict the sale price of houses given a set of property features.
+
+[Back to top](#table-of-contents)
+
+## Hypothesis and how to validate?
+
+* **Hypothesis 1**:
+    - We hypothesize that house size and neighborhood will be the most significant factors influencing house prices.
+    - **Validation**: Perform correlation analysis and feature importance study.
+
+* **Hypothesis 2**:
+    - A successful prediction will rely on multiple features such as house size, age, and neighborhood.
+    - **Validation**: Evaluate feature importance and model performance using various metrics.
+
+* **Hypothesis 3**:
+    - Homes in popular neighborhoods will have higher prices.
+    - **Validation**: Visualize and analyze price distribution by neighborhood.
+
+[Back to top](#table-of-contents)
+
+
 ## Live Link:
 https://predicting-housing-prices.onrender.com
 
