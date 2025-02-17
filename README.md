@@ -183,6 +183,26 @@ The project was deployed to Heroku. For deployment instructions, follow these st
 
 [Back to top](#table-of-contents)
 
+## Forking and Cloning
+
+### Forking
+1. In the top right corner of the repository page, click the **Fork** button.
+
+### Cloning
+1. Click on the **Code** button and copy the HTTPS URL.
+2. In your terminal, type `git clone [URL]`.
+
+### Installing Requirements
+Run the following command to install the required packages:
+bash
+pip install -r requirements.txt
+
+## Credits
+
+### Data Sources
+* Kaggle’s "House Prices - Advanced Regression Techniques" dataset.
+### Acknowledgements
+* Thanks to [Your Mentor's Name] for support and guidance throughout the project.
 
 ## Live Link:
 https://predicting-housing-prices.onrender.com
