@@ -23,11 +23,17 @@ PAGES = {
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.selectbox("Choose a page", list(PAGES.keys()))
 
-# Dynamically import and load the selected page
-try:
-    module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
-    module.app()  # Call the app function of the selected module
-except ModuleNotFoundError as e:
-    st.error(f"Error: {selected_page} module not found. Please check your project structure.")
-except AttributeError:
-    st.error(f"Error: {selected_page} module is missing an `app()` function.")
+# Avoid reloading the same module multiple times
+if "current_page" not in st.session_state or st.session_state.current_page != selected_page:
+    st.session_state.current_page = selected_page  # Store the selected page in session state
+
+    # Dynamically import and load the selected page
+    try:
+        module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
+        if hasattr(module, "app"):
+            st.experimental_set_query_params(page=selected_page)  # Avoid duplicate calls
+            module.app()  # Call the app function of the selected module
+        else:
+            st.error(f"Error: `{selected_page}` module is missing an `app()` function.")
+    except ModuleNotFoundError:
+        st.error(f"Error: `{selected_page}` module not found. Please check your project structure.")
