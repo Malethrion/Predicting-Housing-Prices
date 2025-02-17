@@ -1,6 +1,6 @@
-# Housing Price Predictor - A Predictive Model for Estimating Real Estate Prices
+# Predicting Housing Prices - A Predictive Model for Estimating Real Estate Prices
 
-[Housing Price Predictor](https://predicting-housing-prices.onrender.com/) is a machine-learning (ML) project that uses a publicly available dataset to predict the prices of houses based on various features. The goal is to build a predictive model that can help real estate businesses estimate the value of properties more accurately. The project leverages regression analysis and advanced machine learning techniques for this task.
+[Predicting Housing Prices](https://predicting-housing-prices.onrender.com/) is a machine-learning (ML) project that uses a publicly available dataset to predict the prices of houses based on various features. The goal is to build a predictive model that can help real estate businesses estimate the value of properties more accurately. The project leverages regression analysis and advanced machine learning techniques for this task.
 
 ## Table of Contents
 

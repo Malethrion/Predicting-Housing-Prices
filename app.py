@@ -2,7 +2,7 @@ import streamlit as st
 import importlib
 
 # Set the page configuration
-st.set_page_config(page_title="Housing Price Prediction", layout="wide")
+st.set_page_config(page_title="Predicting Housing Prices", layout="wide")
 
 # Define available pages
 PAGES = {
@@ -23,17 +23,17 @@ PAGES = {
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.selectbox("Choose a page", list(PAGES.keys()))
 
-# Avoid reloading the same module multiple times
-if "current_page" not in st.session_state or st.session_state.current_page != selected_page:
-    st.session_state.current_page = selected_page  # Store the selected page in session state
+# Update query params correctly
+if "page" not in st.query_params or st.query_params["page"] != selected_page:
+    st.query_params.update({"page": selected_page})
 
-    # Dynamically import and load the selected page
-    try:
-        module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
-        if hasattr(module, "app"):
-            st.query_params["page"] = selected_page  # Correct way to update query parameters
-            module.app()  # Call the app function of the selected module
-        else:
-            st.error(f"Error: `{selected_page}` module is missing an `app()` function.")
-    except ModuleNotFoundError:
-        st.error(f"Error: `{selected_page}` module not found. Please check your project structure.")
+# Dynamically import and load the selected page
+try:
+    module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
+    if hasattr(module, "app"):
+        module.app()  # Call the app function of the selected module
+    else:
+        st.error(f"Error: `{selected_page}` module is missing an `app()` function.")
+except ModuleNotFoundError:
+    st.error(f"Error: `{selected_page}` module not found. Please check your project structure.")
+

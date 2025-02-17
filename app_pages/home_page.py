@@ -2,7 +2,7 @@ import streamlit as st
 
 def app():
     st.title("Home Page")
-    st.write("Welcome to the Housing Price Prediction App!")
+    st.write("Welcome to the Predicting Housing Prices App!")
     st.markdown("""
     ## Overview
     This app allows users to explore house price data, analyze trends, and predict house prices using a machine learning model.
