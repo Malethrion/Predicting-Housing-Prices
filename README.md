@@ -154,7 +154,7 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 ### Other Technologies
 
 * [Git](https://git-scm.com/)
-* [Heroku](https://heroku.com)
+* [Render](https://render.com/)
 
 [Back to top](#table-of-contents)
 
