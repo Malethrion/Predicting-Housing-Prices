@@ -3,47 +3,40 @@ import pickle
 import numpy as np
 import pandas as pd
 
-# Load trained model and scaler
-with open("models/trained_model.pkl", "rb") as f:
-    model = pickle.load(f)
+# Load trained model and preprocessing tools
+@st.cache_resource
+def load_model():
+    with open("models/trained_model.pkl", "rb") as f:
+        model = pickle.load(f)
+    with open("models/feature_names.pkl", "rb") as f:
+        feature_names = pickle.load(f)
+    with open("models/scaler.pkl", "rb") as f:
+        scaler = pickle.load(f)
+    return model, feature_names, scaler
 
-with open("models/feature_names.pkl", "rb") as f:
-    feature_names = pickle.load(f)
-
-with open("models/scaler.pkl", "rb") as f:
-    scaler = pickle.load(f)
+# Load model, features, and scaler
+model, feature_names, scaler = load_model()
 
 def predict_price(features):
-    """
-    Takes user input as a dictionary and predicts house price.
-    """
-    # Convert input dictionary to dataframe
+    """Takes user input as a dictionary and predicts house price."""
+    
+    # Convert input dictionary to DataFrame
     input_df = pd.DataFrame([features])
 
-    # Ensure all required columns are present
-    missing_cols = {col: 0 for col in feature_names if col not in input_df}
-    missing_df = pd.DataFrame([missing_cols])
+    # Fill missing columns efficiently without causing fragmentation
+    for col in feature_names:
+        if col not in input_df:
+            input_df[col] = 0  # Add missing columns with default 0
 
-    # Concatenate user input with missing columns
-    input_df = pd.concat([input_df, missing_df], axis=1)
-
-    # Ensure correct column order
+    # Reorder columns to match model training data
     input_df = input_df[feature_names]
 
-    # Scale input data
+    # Apply scaling
     input_scaled = scaler.transform(input_df)
 
     # Predict and transform back from log scale
     log_price = model.predict(input_scaled)
-
-    # Debugging: Print the raw log predictions
-    st.write(f"Log Price Prediction: {log_price}")
-
-    # Convert from log1p to normal scale
-    predicted_price = np.expm1(log_price)
-
-    # Debugging: Print the final predicted price
-    st.write(f"Final Predicted Price: {predicted_price}")
+    predicted_price = np.expm1(log_price)  # Convert log1p back to normal scale
 
     return predicted_price[0]
 
@@ -52,15 +45,16 @@ def app():
     st.title("Enter House Features")
     st.write("### Enter house features below to predict the price.")
 
-    # Create input fields for user
+    # User Input Fields
     features = {
-        "GrLivArea": st.number_input("GrLivArea", value=1500),
-        "OverallQual": st.number_input("OverallQual", value=5),
-        "GarageCars": st.number_input("GarageCars", value=2),
-        "YearBuilt": st.number_input("YearBuilt", value=2000),
-        "TotalBsmtSF": st.number_input("TotalBsmtSF", value=1000),
+        "GrLivArea": st.number_input("GrLivArea", value=1500, min_value=500, max_value=5000),
+        "OverallQual": st.number_input("OverallQual", value=5, min_value=1, max_value=10),
+        "GarageCars": st.number_input("GarageCars", value=2, min_value=0, max_value=5),
+        "YearBuilt": st.number_input("YearBuilt", value=2000, min_value=1800, max_value=2023),
+        "TotalBsmtSF": st.number_input("TotalBsmtSF", value=1000, min_value=0, max_value=3000),
     }
 
+    # Button to trigger prediction
     if st.button("Predict Price"):
         price = predict_price(features)
         st.success(f"Predicted House Price: ${price:,.2f}")

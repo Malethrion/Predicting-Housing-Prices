@@ -1,5 +1,43 @@
-# House Price Prediction - Project 5
-This project predicts house prices using machine learning. The goal is to help users estimate property values based on key features such as size, location, and condition.
+# Housing Price Predictor - A Predictive Model for Estimating Real Estate Prices
+
+[Housing Price Predictor](https://your-deployed-link.com/) is a machine-learning (ML) project that uses a publicly available dataset to predict the prices of houses based on various features. The goal is to build a predictive model that can help real estate businesses estimate the value of properties more accurately. The project leverages regression analysis and advanced machine learning techniques for this task.
+
+## Table of Contents
+
+- [Dataset Content](#dataset-content)
+- [Business Requirements](#business-requirements)
+- [Hypothesis](#hypothesis-and-how-to-validate)
+- [Mapping Business Requirements to Data Visualization and ML Tasks](#the-rationale-to-map-the-business-requirements-to-the-data-visualizations-and-ml-tasks)
+- [ML Business Case](#ml-business-case)
+- [Epics and User Stories](#epics-and-user-stories)
+- [Dashboard Design](#dashboard-design)
+- [Technologies Used](#technologies-used)
+- [Testing](#testing)
+- [Unfixed Bugs](#unfixed-bugs)
+- [Deployment](#deployment)
+- [Credits](#credits)
+- [Acknowledgements](#acknowledgements)
+
+## Dataset Content
+
+The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data). Each row represents a property listing, with features such as:
+
+- The size of the property (square feet)
+- Number of bedrooms and bathrooms
+- Property location and neighborhood
+- Various physical attributes (e.g., garage, pool, etc.)
+- Historical sale price of properties
+
+| Attribute       | Information                                       | Units                       |
+|-----------------|---------------------------------------------------|-----------------------------|
+| `OverallQual`   | Overall material and finish quality               | Rating from 1 to 10         |
+| `GrLivArea`     | Above grade (ground) living area in square feet  | square feet                 |
+| `TotalBsmtSF`   | Total basement area in square feet                | square feet                 |
+| `GarageCars`    | Size of garage in car capacity                    | Number of cars              |
+| `PoolArea`      | Pool area in square feet                          | square feet                 |
+| `SalePrice`     | The sale price of the house                       | USD                         |
+
+[Back to top](#table-of-contents)
 
 ## Live Link:
 https://predicting-housing-prices.onrender.com
