@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 import pandas as pd
 
-# Load trained model and preprocessing tools
+# Cache model loading to prevent reloading on every UI refresh
 @st.cache_resource
 def load_model():
     with open("models/trained_model.pkl", "rb") as f:
@@ -14,29 +14,24 @@ def load_model():
         scaler = pickle.load(f)
     return model, feature_names, scaler
 
-# Load model, features, and scaler
 model, feature_names, scaler = load_model()
 
 def predict_price(features):
-    """Takes user input as a dictionary and predicts house price."""
-    
-    # Convert input dictionary to DataFrame
     input_df = pd.DataFrame([features])
 
-    # Fill missing columns efficiently without causing fragmentation
-    for col in feature_names:
-        if col not in input_df:
-            input_df[col] = 0  # Add missing columns with default 0
+    # Ensure all required columns exist
+    missing_cols = {col: 0 for col in feature_names if col not in input_df}
+    input_df = pd.concat([input_df, pd.DataFrame([missing_cols])], axis=1)
 
-    # Reorder columns to match model training data
+    # Align columns to match model input
     input_df = input_df[feature_names]
 
-    # Apply scaling
+    # Scale input data
     input_scaled = scaler.transform(input_df)
 
-    # Predict and transform back from log scale
+    # Predict price
     log_price = model.predict(input_scaled)
-    predicted_price = np.expm1(log_price)  # Convert log1p back to normal scale
+    predicted_price = np.expm1(log_price)
 
     return predicted_price[0]
 
@@ -45,17 +40,20 @@ def app():
     st.title("Enter House Features")
     st.write("### Enter house features below to predict the price.")
 
-    # User Input Fields
+    # Use unique keys to prevent duplicate ID errors
     features = {
-        "GrLivArea": st.number_input("GrLivArea", value=1500, min_value=500, max_value=5000),
-        "OverallQual": st.number_input("OverallQual", value=5, min_value=1, max_value=10),
-        "GarageCars": st.number_input("GarageCars", value=2, min_value=0, max_value=5),
-        "YearBuilt": st.number_input("YearBuilt", value=2000, min_value=1800, max_value=2023),
-        "TotalBsmtSF": st.number_input("TotalBsmtSF", value=1000, min_value=0, max_value=3000),
+        "GrLivArea": st.number_input("GrLivArea", value=1500, key="grlivarea_input_1"),
+        "OverallQual": st.number_input("OverallQual", value=5, key="overallqual_input_1"),
+        "GarageCars": st.number_input("GarageCars", value=2, key="garagecars_input_1"),
+        "YearBuilt": st.number_input("YearBuilt", value=2000, key="yearbuilt_input_1"),
+        "TotalBsmtSF": st.number_input("TotalBsmtSF", value=1000, key="totalbsmt_input_1"),
     }
 
-    # Button to trigger prediction
-    if st.button("Predict Price"):
+    # Predict button
+    if st.button("Predict Price", key="predict_button_1"):
         price = predict_price(features)
         st.success(f"Predicted House Price: ${price:,.2f}")
 
+print("Running Prediction Page...")
+if __name__ == "__main__":
+    app()
