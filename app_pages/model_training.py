@@ -19,8 +19,18 @@ def app():
     X = data.drop(columns=[target])
     y = np.log(data[target])  # Apply log transformation
 
+    # Ensure no NaN values in y
+    y.replace([np.inf, -np.inf], np.nan, inplace=True)  # Replace infinities
+    y.dropna(inplace=True)  # Drop any NaN values
+
+    # Ensure X and y have the same length after dropping NaN values
+    X = X.loc[y.index]
+
     # Train-test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Verify no NaN values exist before training
+    st.write(f"Missing values in y_train after cleaning: {y_train.isnull().sum()}")
 
     # Scale features
     scaler = StandardScaler()
@@ -48,4 +58,3 @@ def app():
 
     # Display success message
     st.success("Model training completed. Saved model, feature names, and scaler.")
-
