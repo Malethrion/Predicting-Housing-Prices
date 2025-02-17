@@ -117,6 +117,47 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 
 [Back to top](#table-of-contents)
 
+## Dashboard Design
+
+### Page 1: Project Summary
+* **Section 1 - Summary**
+    * Introduction to the project and dataset.
+    * Overview of business requirements.
+
+### Page 2: Feature Correlation Study
+* Display the correlation results and heatmaps to identify key predictors of house prices.
+* Visualize the relationships between features and the target variable.
+
+### Page 3: House Price Prediction
+* Allow users to input features and get a predicted house price.
+
+### Page 4: Model Performance
+* Display model evaluation metrics (e.g., R-squared, Mean Absolute Error) to showcase the model's performance.
+
+[Back to top](#table-of-contents)
+
+## Technologies Used
+
+### Languages
+
+* [Python](https://www.python.org/)
+
+### Python Packages
+
+* [Pandas](https://pandas.pydata.org/)
+* [Numpy](https://numpy.org/)
+* [Matplotlib](https://matplotlib.org/)
+* [Scikit-learn](https://scikit-learn.org/)
+* [XGBoost](https://xgboost.readthedocs.io/en/stable/)
+* [Streamlit](https://streamlit.io/)
+
+### Other Technologies
+
+* [Git](https://git-scm.com/)
+* [Heroku](https://heroku.com)
+
+[Back to top](#table-of-contents)
+
 
 ## Live Link:
 https://predicting-housing-prices.onrender.com
