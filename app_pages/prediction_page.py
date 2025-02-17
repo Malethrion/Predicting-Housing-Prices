@@ -2,7 +2,6 @@ import streamlit as st
 import pickle
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import StandardScaler
 
 # Load trained model and scaler
 with open("models/trained_model.pkl", "rb") as f:
@@ -40,11 +39,10 @@ def predict_price(features):
 
 # Streamlit UI
 def app():
-    """Streamlit UI for user input and price prediction."""
-    st.title("House Price Prediction")
-    st.write("Enter house features below to predict the price.")
+    st.title("Enter House Features")
+    st.write("### Enter house features below to predict the price.")
 
-    # Create input fields for user
+    # Create input fields for user (Kept as per your request)
     features = {
         "GrLivArea": st.number_input("GrLivArea", value=1500),
         "OverallQual": st.number_input("OverallQual", value=5),
