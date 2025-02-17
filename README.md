@@ -63,6 +63,35 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 
 [Back to top](#table-of-contents)
 
+## The rationale to map the business requirements to the Data Visualizations and ML tasks
+
+* **Business Requirement 1**: Data Visualization and Correlation study
+    - We need to perform a correlation study to identify the most significant factors impacting house prices.
+    - Pearson’s and Spearman’s correlation tests will be applied to understand relationships.
+    - Predictive Power Score (PPS) will help assess relationships between features, considering both categorical and numerical data.
+
+* **Business Requirement 2**: Regression Model
+    - The goal is to predict house prices using regression analysis.
+    - We will build a regression model and apply hyperparameter optimization to maximize its performance.
+    - This task will be completed during the **Model Training, Optimization, and Validation** Epic.
+
+[Back to top](#table-of-contents)
+
+## ML Business Case
+
+**Regression Model**
+
+* We want to develop a machine learning model to predict housing prices based on features such as house size, number of bedrooms, neighborhood, and more.
+* The target variable is `SalePrice`, a continuous variable.
+* Success metrics:
+    - R-squared of at least 0.85 for both train and test sets.
+* The model will be considered a failure if:
+    - The R-squared is below 0.80.
+    - The model does not generalize well to unseen data.
+* The training data for the model comes from Kaggle's dataset, which contains historical housing prices and features.
+
+[Back to top](#table-of-contents)
+
 
 ## Live Link:
 https://predicting-housing-prices.onrender.com
