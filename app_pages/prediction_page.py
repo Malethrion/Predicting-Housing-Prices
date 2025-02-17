@@ -20,10 +20,9 @@ def predict_price(features):
     # Convert input dictionary to dataframe
     input_df = pd.DataFrame([features])
 
-    # Ensure the input has all necessary features
-    for feature in feature_names:
-        if feature not in input_df:
-            input_df[feature] = 0  # Initialize missing columns
+    # Add missing columns all at once
+    missing_cols = {col: 0 for col in feature_names if col not in input_df}
+    input_df = input_df.assign(**missing_cols)  # Efficiently add missing columns
 
     # Align columns to match training data
     input_df = input_df[feature_names]
