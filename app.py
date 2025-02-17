@@ -31,7 +31,7 @@ if "current_page" not in st.session_state or st.session_state.current_page != se
     try:
         module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
         if hasattr(module, "app"):
-            st.experimental_set_query_params(page=selected_page)  # Avoid duplicate calls
+            st.query_params["page"] = selected_page  # Correct way to update query parameters
             module.app()  # Call the app function of the selected module
         else:
             st.error(f"Error: `{selected_page}` module is missing an `app()` function.")
