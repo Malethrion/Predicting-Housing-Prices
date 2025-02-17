@@ -3,31 +3,35 @@ import pickle
 import os
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import RandomForestRegressor
 
 def app():
-    """Train model and save it for prediction."""
+    """Train the model and save it for prediction."""
     st.title("Model Training")
     st.write("Training the model and saving it for predictions.")
 
+    data_path = "data/processed_train.csv"
+    if not os.path.exists(data_path):
+        st.error(f"File not found: {data_path}. Please run feature engineering first.")
+        return
+
     # Load dataset
-    data = pd.read_csv("data/processed_train.csv")
+    data = pd.read_csv(data_path)
 
+    # Ensure SalePrice exists and remove invalid values
     target = "SalePrice"
-
-    # If SalePrice is too small, scale it back
-    if data[target].max() < 10000:
-        data[target] *= 100000  
-
-    # Remove rows where SalePrice is invalid (≤ 0)
+    if target not in data.columns:
+        st.error(f"SalePrice column missing in {data_path}.")
+        return
+    
     data = data[data[target] > 0].copy()
+    data[target] = np.log1p(data[target])  # Apply log transformation
 
-    # Apply log1p transformation
-    y = np.log1p(data[target])
+    # Separate features and target
     X = data.drop(columns=[target])
+    y = data[target]
 
     # Train-test split
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -46,11 +50,11 @@ def app():
     with open("models/trained_model.pkl", "wb") as f:
         pickle.dump(model, f)
     with open("models/feature_names.pkl", "wb") as f:
-        pickle.dump(list(X_train.columns), f)
+        pickle.dump(list(X_train.columns), f)  # Save correct feature names
     with open("models/scaler.pkl", "wb") as f:
         pickle.dump(scaler, f)
 
-    st.success("Model training completed!")
+    st.success("✅ Model training completed!")
 
 if __name__ == "__main__":
     app()
