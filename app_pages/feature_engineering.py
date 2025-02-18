@@ -12,19 +12,18 @@ def app():
 
     data_path = "data/final_cleaned_train.csv"
 
-    # ✅ Check if data file exists
     if not os.path.exists(data_path):
         st.error(f"❌ File not found: `{data_path}`. Please run data cleaning first.")
         return
 
     st.success(f"✅ Data file found: `{data_path}`")
 
-    # ✅ Load dataset
+    # Load dataset
     data = pd.read_csv(data_path)
     st.write("📊 **Dataset Preview (First 5 rows):**")
     st.dataframe(data.head())
 
-    # ✅ Identify features
+    # Identify features
     target = "SalePrice"
     y = np.log1p(data[target])  # Log-transform SalePrice
     X = data.drop(columns=[target])
@@ -34,9 +33,9 @@ def app():
 
     st.write(f"🔹 Numeric Features: {len(numerical_features)} | Categorical Features: {len(categorical_features)}")
 
-    # ✅ Define transformations
+    # Define transformations
     scaler = StandardScaler()
-    one_hot_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)  # ⬅️ `sparse=False` to ensure NumPy array output
+    one_hot_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
 
     preprocessor = ColumnTransformer(
         transformers=[
@@ -45,14 +44,14 @@ def app():
         ]
     )
 
-    # ✅ Apply transformations
+    # Apply transformations
     try:
         transformed_data = preprocessor.fit_transform(X)
     except Exception as e:
         st.error(f"❌ Error in data transformation: {e}")
         return
 
-    # ✅ Extract feature names
+    # Extract feature names
     try:
         encoded_feature_names = preprocessor.named_transformers_['cat'].get_feature_names_out(categorical_features)
         feature_names = numerical_features + list(encoded_feature_names)
@@ -62,13 +61,11 @@ def app():
 
     st.write("✅ Feature transformation successful!")
 
-    # ✅ Convert to DataFrame
+    # Convert to DataFrame
     processed_data = pd.DataFrame(transformed_data, columns=feature_names)
-
-    # ✅ Ensure `SalePrice` is added back for model training
     processed_data[target] = y
 
-    # ✅ Save processed data
+    # Save processed data
     processed_data_path = "data/processed_train.csv"
     processed_data.to_csv(processed_data_path, index=False)
 
@@ -77,12 +74,12 @@ def app():
     st.write("📊 **Transformed Data Preview:**")
     st.dataframe(processed_data.head())
 
-    # ✅ Save the preprocessor and feature names
+    # Save the preprocessor and feature names
     model_dir = "models"
-    os.makedirs(model_dir, exist_ok=True)  # Ensure the directory exists
+    os.makedirs(model_dir, exist_ok=True)
 
     with open(f"{model_dir}/preprocessor.pkl", "wb") as f:
-        pickle.dump(preprocessor, f)  # Save full preprocessor
+        pickle.dump(preprocessor, f)
 
     with open(f"{model_dir}/feature_names.pkl", "wb") as f:
         pickle.dump(feature_names, f)
