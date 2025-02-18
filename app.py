@@ -1,38 +1,46 @@
 import streamlit as st
-import importlib
+import os
+import sys
 
-# Set the page configuration
-st.set_page_config(page_title="Predicting Housing Prices", layout="wide")
+# Ensure the app_pages directory is in the Python path
+sys.path.append(os.path.dirname(__file__))
 
-# Define available pages
-PAGES = {
-    "Home": "app_pages.home_page",
-    "Correlation Study": "app_pages.correlation_study",
-    "Data Cleaning": "app_pages.data_cleaning",
-    "Feature Engineering": "app_pages.feature_engineering",
-    "Model Training": "app_pages.model_training",
-    "Model Evaluation": "app_pages.model_evaluation",
-    "Hyperparameter Tuning": "app_pages.hyperparameter_tuning",
-    "Feature Importance": "app_pages.feature_importance",
-    "Final Model": "app_pages.final_model",
-    "Deployment": "app_pages.deployment",
-    "Prediction": "app_pages.prediction_page",
-}
+from app_pages import prediction_page, home_page
 
-# Sidebar navigation
-st.sidebar.title("Navigation")
-selected_page = st.sidebar.selectbox("Choose a page", list(PAGES.keys()))
+dimport streamlit as st
+import os
+import sys
 
-# ✅ FIX 1: Update query params correctly (fix disappearing pages)
-if "page" not in st.query_params or st.query_params["page"] != selected_page:
-    st.query_params.update({"page": selected_page})
+# Ensure the app_pages directory is in the Python path
+sys.path.append(os.path.dirname(__file__))
 
-# ✅ FIX 2: Always load the selected page (force refresh)
-try:
-    module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
-    if hasattr(module, "app"):
-        module.app()  # Call the app function of the selected module
-    else:
-        st.error(f"Error: `{selected_page}` module is missing an `app()` function.")
-except ModuleNotFoundError:
-    st.error(f"Error: `{selected_page}` module not found. Please check your project structure.")
+from app_pages import home_page, prediction_page, eda_page, feature_importance_page, model_evaluation_page
+
+import streamlit as st
+import os
+import sys
+
+# Ensure the app_pages directory is in the Python path
+sys.path.append(os.path.dirname(__file__))
+
+from app_pages import home_page, prediction_page, eda_page, feature_importance_page, model_evaluation_page
+
+def main():
+    st.set_page_config(page_title="House Price Prediction", page_icon="🏡")
+    
+    st.sidebar.title("Navigation")
+    page = st.sidebar.radio("Go to", ["Home", "Predict Price", "EDA", "Feature Importance", "Model Evaluation"])
+    
+    if page == "Home":
+        home_page.app()
+    elif page == "Predict Price":
+        prediction_page.app()
+    elif page == "EDA":
+        eda_page.app()
+    elif page == "Feature Importance":
+        feature_importance_page.app()
+    elif page == "Model Evaluation":
+        model_evaluation_page.app()
+
+if __name__ == "__main__":
+    main()
