@@ -128,7 +128,7 @@ The dataset is sourced from [Kaggle](https://www.kaggle.com/c/house-prices-advan
 * Display the correlation results and heatmaps to identify key predictors of house prices.
 * Visualize the relationships between features and the target variable.
 
-### Page 3: House Price Prediction
+### Page 3: Predicting Housing Prices
 * Allow users to input features and get a predicted house price.
 
 ### Page 4: Model Performance

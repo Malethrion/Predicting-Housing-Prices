@@ -47,21 +47,21 @@ def predict_price(features):
     try:
         input_df = pd.DataFrame([features])
 
-        # Ensure all required categorical and numerical columns exist
+        # Ensure categorical features exist with default values
+        for col, default_value in categorical_defaults.items():
+            if col not in input_df.columns:
+                input_df[col] = default_value
+
+        # Ensure all numerical columns exist
         missing_cols = list(set(feature_names) - set(input_df.columns))
         missing_data = pd.DataFrame(0, index=[0], columns=missing_cols)
-        
-        # Fill missing categorical values with default values
-        for col, default_value in categorical_defaults.items():
-            if col in missing_data.columns:
-                missing_data[col] = default_value
-        
+
         # Use pd.concat() to efficiently merge missing columns and avoid fragmentation
         input_df = pd.concat([input_df, missing_data], axis=1)
         input_df = input_df.copy()  # Ensure de-fragmented DataFrame
 
-        # Align columns to match model training order
-        input_df = input_df[feature_names]
+        # Align column order with trained model
+        input_df = input_df.reindex(columns=feature_names, fill_value=0)
 
         # Transform using preprocessor
         input_transformed = preprocessor.transform(input_df)
@@ -78,7 +78,7 @@ def predict_price(features):
 # Streamlit UI
 
 def app():
-    st.title("🏡 House Price Prediction")
+    st.title("🏡 Predicting Housing Prices")
     st.write("### Enter house features below to predict the price.")
 
     numerical_inputs = {
