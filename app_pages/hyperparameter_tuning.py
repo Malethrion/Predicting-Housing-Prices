@@ -1,7 +1,9 @@
 import streamlit as st
 import pandas as pd
-from sklearn.model_selection import GridSearchCV
+import pickle
+from sklearn.model_selection import RandomizedSearchCV
 from sklearn.ensemble import RandomForestRegressor
+import numpy as np
 
 def app():
     st.title("Hyperparameter Tuning")
@@ -12,10 +14,26 @@ def app():
     y = data["SalePrice"]
 
     # Define hyperparameter grid
-    param_grid = {"n_estimators": [50, 100, 200]}
+    param_grid = {
+        "n_estimators": [50, 100, 200, 300],
+        "max_depth": [None, 10, 20, 30],
+        "min_samples_split": [2, 5, 10],
+        "min_samples_leaf": [1, 2, 4],
+    }
 
-    # Grid search
-    grid_search = GridSearchCV(RandomForestRegressor(), param_grid, cv=3, n_jobs=-1)
-    grid_search.fit(X, y)
+    # Randomized Search for efficiency
+    random_search = RandomizedSearchCV(
+        RandomForestRegressor(), param_distributions=param_grid, n_iter=10, cv=3, n_jobs=-1, random_state=42
+    )
+    random_search.fit(X, y)
 
-    st.write(f"Best Parameters: {grid_search.best_params_}")
+    # Save best parameters
+    best_params = random_search.best_params_
+    with open("models/best_hyperparameters.pkl", "wb") as f:
+        pickle.dump(best_params, f)
+
+    st.write("### Best Hyperparameters")
+    st.write(best_params)
+
+if __name__ == "__main__":
+    app()
