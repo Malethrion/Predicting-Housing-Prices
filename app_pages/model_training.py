@@ -26,10 +26,7 @@ def app():
         st.error(f"SalePrice column missing in {data_path}.")
         return
     
-    data = data[data[target] > 0].copy()
-    data[target] = np.log1p(data[target])  # Apply log transformation
-
-    # Separate features and target
+    # Extract features and target
     X = data.drop(columns=[target])
     y = data[target]
 
@@ -42,7 +39,7 @@ def app():
     X_test_scaled = scaler.transform(X_test)
 
     # Train model
-    model = RandomForestRegressor(n_estimators=100, random_state=42)
+    model = RandomForestRegressor(n_estimators=200, random_state=42)
     model.fit(X_train_scaled, y_train)
 
     # Save model, scaler, and feature names
@@ -50,11 +47,11 @@ def app():
     with open("models/trained_model.pkl", "wb") as f:
         pickle.dump(model, f)
     with open("models/feature_names.pkl", "wb") as f:
-        pickle.dump(list(X_train.columns), f)  # Save correct feature names
+        pickle.dump(list(X_train.columns), f)
     with open("models/scaler.pkl", "wb") as f:
         pickle.dump(scaler, f)
 
-    st.success("✅ Model training completed!")
+    st.success("✅ Model training completed and saved successfully!")
 
 if __name__ == "__main__":
     app()
