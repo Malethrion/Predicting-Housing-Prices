@@ -42,20 +42,17 @@ def predict_price(features):
         st.write("🔄 Converting input to DataFrame...")
         input_df = pd.DataFrame([features])
 
-        # ✅ Ensure all required numerical & categorical columns exist
-        missing_cols = set(feature_names) - set(input_df.columns)
-        for col in missing_cols:
-            input_df[col] = 0  # Default for numerical features
+        # ✅ Ensure all required numerical & categorical columns exist efficiently
+        missing_cols = list(set(feature_names) - set(input_df.columns))
+        if missing_cols:
+            missing_data = pd.DataFrame(0, index=[0], columns=missing_cols)
+            input_df = pd.concat([input_df, missing_data], axis=1)
 
         # ✅ Align column order to match training data
         input_df = input_df[feature_names]
 
         # ✅ Apply preprocessing transformation
         input_transformed = preprocessor.transform(input_df)
-
-        # ✅ Debugging Output
-        st.write("🔍 **Feature Names (Input to Model):**", feature_names)
-        st.write("🔍 **Transformed Input Shape:**", input_transformed.shape)
 
         # ✅ Predict using the trained model
         log_price = model.predict(input_transformed)
