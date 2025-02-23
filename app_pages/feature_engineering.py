@@ -3,12 +3,11 @@ import pandas as pd
 import os
 import numpy as np
 import pickle
-from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
 def app():
-    st.title("Feature Engineering")
-    st.write("**🔍 Debugging Mode: Checking each step!**")
+    st.title("🔧 Feature Engineering")
 
     data_path = "data/final_cleaned_train.csv"
 
@@ -25,6 +24,10 @@ def app():
 
     # Identify features
     target = "SalePrice"
+    if target not in data.columns:
+        st.error(f"❌ `{target}` column is missing. Ensure `final_cleaned_train.csv` includes target values.")
+        return
+
     y = np.log1p(data[target])  # Log-transform SalePrice
     X = data.drop(columns=[target])
 
@@ -33,9 +36,9 @@ def app():
 
     st.write(f"🔹 Numeric Features: {len(numerical_features)} | Categorical Features: {len(categorical_features)}")
 
-    # Define transformations
-    scaler = StandardScaler()
-    one_hot_encoder = OneHotEncoder(handle_unknown='ignore', sparse=False)
+    # Define and fit transformations
+    scaler = MinMaxScaler()
+    one_hot_encoder = OneHotEncoder(handle_unknown='ignore', sparse_output=False)  # Updated for sklearn > 1.2
 
     preprocessor = ColumnTransformer(
         transformers=[
@@ -44,7 +47,7 @@ def app():
         ]
     )
 
-    # Apply transformations
+    # Fit and transform the data
     try:
         transformed_data = preprocessor.fit_transform(X)
     except Exception as e:
@@ -63,10 +66,13 @@ def app():
 
     # Convert to DataFrame
     processed_data = pd.DataFrame(transformed_data, columns=feature_names)
-    processed_data[target] = y
+
+    # Ensure SalePrice is added back for model training (but not for prediction)
+    processed_data["SalePrice"] = y  # Restore target variable
 
     # Save processed data
     processed_data_path = "data/processed_train.csv"
+    os.makedirs("data", exist_ok=True)
     processed_data.to_csv(processed_data_path, index=False)
 
     st.success("✅ **Feature Engineering Completed!**")
@@ -74,17 +80,20 @@ def app():
     st.write("📊 **Transformed Data Preview:**")
     st.dataframe(processed_data.head())
 
-    # Save the preprocessor and feature names
+    # Save the preprocessor, fitted scaler, and feature names
     model_dir = "models"
     os.makedirs(model_dir, exist_ok=True)
 
     with open(f"{model_dir}/preprocessor.pkl", "wb") as f:
-        pickle.dump(preprocessor, f)
+        pickle.dump(preprocessor, f)  # Save full preprocessor
+
+    with open(f"{model_dir}/scaler.pkl", "wb") as f:
+        pickle.dump(scaler, f)  # Save fitted scaler
 
     with open(f"{model_dir}/feature_names.pkl", "wb") as f:
-        pickle.dump(feature_names, f)
+        pickle.dump(feature_names, f)  # Save feature names
 
-    st.success("✅ **Preprocessor and Feature Names Saved!**")
+    st.success("✅ **Preprocessor, Fitted Scaler, and Feature Names Saved!**")
 
 if __name__ == "__main__":
     app()
