@@ -9,12 +9,12 @@ def app():
     st.title("🏡 House Price Prediction")
 
     # Load trained model, preprocessor, and feature names
-    model_path = "models/trained_model.pkl"
+    model_path = "models/optimized_model.pkl"  # Use optimized model for better predictions
     preprocessor_path = "models/preprocessor.pkl"
     feature_names_path = "models/feature_names.pkl"
 
     if not os.path.exists(model_path):
-        st.error(f"❌ Model file not found at `{model_path}`. Train the model first.")
+        st.error(f"❌ Optimized model file not found at `{model_path}`. Run hyperparameter tuning and model training first.")
         return
     if not os.path.exists(preprocessor_path):
         st.error(f"❌ Preprocessor file not found at `{preprocessor_path}`. Run feature engineering first.")
@@ -34,17 +34,17 @@ def app():
         st.error(f"❌ Error loading files: {e}")
         return
 
-    st.success("✅ Model, Preprocessor, and Feature Names Loaded!")
+    st.success("✅ Optimized Model, Preprocessor, and Feature Names Loaded!")
 
     # User inputs (numerical and categorical features)
     st.subheader("Enter House Features:")
-    GrLivArea = st.number_input("GrLivArea (Above Ground Living Area in SqFt)", min_value=500, max_value=10000, value=2500)
-    OverallQual = st.slider("OverallQual (Overall Quality 1-10)", 1, 10, 8)
+    GrLivArea = st.number_input("GrLivArea (Above Ground Living Area in SqFt)", min_value=500, max_value=10000, value=3000)
+    OverallQual = st.slider("OverallQual (Overall Quality 1-10)", 1, 10, 9)
     GarageCars = st.slider("GarageCars (Number of Garages)", 0, 5, 3)
-    YearBuilt = st.number_input("YearBuilt (Year House Built)", min_value=1800, max_value=2025, value=2010)
+    YearBuilt = st.number_input("YearBuilt (Year House Built)", min_value=1800, max_value=2025, value=2020)
     TotalBsmtSF = st.number_input("TotalBsmtSF (Total Basement Size in SqFt)", min_value=0, max_value=10000, value=2000)
 
-    # Hardcode common categorical values (based on Kaggle dataset defaults)
+    # Hardcode common categorical values for high-value homes (based on Kaggle dataset defaults)
     MSZoning = "RL"
     Street = "Pave"
     Alley = "No"
@@ -53,41 +53,41 @@ def app():
     Utilities = "AllPub"
     LotConfig = "Inside"
     LandSlope = "Gtl"
-    Neighborhood = "NoRidge"  # High-value neighborhood for higher predictions
+    Neighborhood = "NoRidge"  # High-value neighborhood
     Condition1 = "Norm"
     Condition2 = "Norm"
     BldgType = "1Fam"
-    HouseStyle = "2Story"  # Larger house style for higher predictions
+    HouseStyle = "2Story"  # Larger house style
     RoofStyle = "Gable"
     RoofMatl = "CompShg"
     Exterior1st = "VinylSd"
     Exterior2nd = "VinylSd"
-    MasVnrType = "None"
-    ExterQual = "Ex"  # Excellent quality for higher predictions
+    MasVnrType = "BrkFace"  # Brick face for higher value
+    ExterQual = "Ex"  # Excellent quality
     ExterCond = "TA"
     Foundation = "PConc"
-    BsmtQual = "Ex"  # Excellent basement quality for higher predictions
+    BsmtQual = "Ex"  # Excellent basement quality
     BsmtCond = "TA"
-    BsmtExposure = "No"
-    BsmtFinType1 = "GLQ"  # Good Living Quarters for higher predictions
+    BsmtExposure = "Gd"  # Good exposure for higher value
+    BsmtFinType1 = "GLQ"  # Good Living Quarters
     BsmtFinType2 = "Unf"
     Heating = "GasA"
     HeatingQC = "Ex"
     CentralAir = "Y"
     Electrical = "SBrkr"
-    KitchenQual = "Ex"  # Excellent kitchen quality for higher predictions
+    KitchenQual = "Ex"  # Excellent kitchen quality
     Functional = "Typ"
-    FireplaceQu = "Ex"  # Excellent fireplace quality for higher predictions
+    FireplaceQu = "Ex"  # Excellent fireplace quality
     GarageType = "Attchd"
-    GarageFinish = "Fin"  # Finished garage for higher predictions
+    GarageFinish = "Fin"  # Finished garage
     GarageQual = "TA"
     GarageCond = "TA"
     PavedDrive = "Y"
-    PoolQC = "No"
-    Fence = "No"
-    MiscFeature = "No"
-    SaleType = "WD"
-    SaleCondition = "Normal"
+    PoolQC = "Ex"  # Excellent pool quality for higher value
+    Fence = "GdPrv"  # Good privacy fence for higher value
+    MiscFeature = "Shed"  # Shed for higher value
+    SaleType = "New"  # New construction for higher value
+    SaleCondition = "Partial"  # Partial sale for higher value
 
     # Define numerical and categorical features
     numerical_features = ['Id', 'MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual', 'OverallCond', 'YearBuilt', 
@@ -117,27 +117,29 @@ def app():
     user_data.loc[0, 'TotalBsmtSF'] = TotalBsmtSF
 
     # Set realistic defaults for other numerical features to support higher prices
-    user_data.loc[0, 'LotFrontage'] = 80  # Median lot frontage for higher-value homes
-    user_data.loc[0, 'LotArea'] = 10000  # Larger lot area for higher-value homes
-    user_data.loc[0, 'OverallCond'] = 5  # Average condition
+    user_data.loc[0, 'LotFrontage'] = 100  # Larger lot frontage for higher-value homes
+    user_data.loc[0, 'LotArea'] = 15000  # Larger lot area for higher-value homes
+    user_data.loc[0, 'OverallCond'] = 7  # Good condition
     user_data.loc[0, 'YearRemodAdd'] = YearBuilt  # Assume remodeled same year as built
-    user_data.loc[0, 'MasVnrArea'] = 200  # Common masonry veneer area for higher-value homes
-    user_data.loc[0, 'BsmtFinSF1'] = 1000  # Finished basement area for higher-value homes
+    user_data.loc[0, 'MasVnrArea'] = 400  # Larger masonry veneer area
+    user_data.loc[0, 'BsmtFinSF1'] = 1500  # Larger finished basement area
     user_data.loc[0, 'BsmtUnfSF'] = 500  # Unfinished basement area
-    user_data.loc[0, '1stFlrSF'] = 1500  # First floor size
-    user_data.loc[0, '2ndFlrSF'] = 1000  # Second floor size (for 2Story)
+    user_data.loc[0, '1stFlrSf'] = 2000  # Larger first floor size
+    user_data.loc[0, '2ndFlrSF'] = 1500  # Larger second floor size (for 2Story)
     user_data.loc[0, 'BsmtFullBath'] = 1  # Full basement bathroom
-    user_data.loc[0, 'FullBath'] = 2  # Full bathrooms
+    user_data.loc[0, 'FullBath'] = 3  # More full bathrooms for higher value
     user_data.loc[0, 'HalfBath'] = 1  # Half bathrooms
-    user_data.loc[0, 'BedroomAbvGr'] = 4  # Bedrooms above ground
+    user_data.loc[0, 'BedroomAbvGr'] = 5  # More bedrooms
     user_data.loc[0, 'KitchenAbvGr'] = 1  # Kitchens
-    user_data.loc[0, 'TotRmsAbvGrd'] = 8  # Total rooms above ground
-    user_data.loc[0, 'Fireplaces'] = 2  # Fireplaces for higher-value homes
-    user_data.loc[0, 'GarageArea'] = 600  # Larger garage area
-    user_data.loc[0, 'WoodDeckSF'] = 200  # Wood deck area
-    user_data.loc[0, 'OpenPorchSF'] = 100  # Open porch area
+    user_data.loc[0, 'TotRmsAbvGrd'] = 10  # More total rooms
+    user_data.loc[0, 'Fireplaces'] = 2  # More fireplaces
+    user_data.loc[0, 'GarageArea'] = 800  # Larger garage area
+    user_data.loc[0, 'WoodDeckSF'] = 300  # Larger wood deck
+    user_data.loc[0, 'OpenPorchSF'] = 150  # Larger open porch
+    user_data.loc[0, 'PoolArea'] = 500  # Pool area for higher value
+    user_data.loc[0, 'MiscVal'] = 1000  # Miscellaneous value (e.g., shed)
     user_data.loc[0, 'MoSold'] = 6  # Mid-year sale
-    user_data.loc[0, 'YrSold'] = 2020  # Recent year
+    user_data.loc[0, 'YrSold'] = 2023  # Recent year
 
     # Set categorical features with hardcoded values for higher-value homes
     user_data.loc[0, 'MSZoning'] = MSZoning
