@@ -88,7 +88,7 @@ def app():
     SaleType = "WD"  # Most common sale type
     SaleCondition = "Normal"  # Most common sale condition
 
-    # Initialize user_data with correct dtypes for numerical and categorical features
+    # Define numerical and categorical features
     numerical_features = ['Id', 'MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual', 'OverallCond', 'YearBuilt', 
                          'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 
                          '1stFlrSF', '2ndFlrSF', 'LowQualFinSF', 'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 
@@ -103,10 +103,10 @@ def app():
                            'Functional', 'FireplaceQu', 'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond', 
                            'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature', 'SaleType', 'SaleCondition']
 
-    # Create user_data with appropriate dtypes
-    dtypes = {feat: 'float64' for feat in numerical_features}
-    dtypes.update({feat: 'object' for feat in categorical_features})
-    user_data = pd.DataFrame(columns=list(dtypes.keys()), dtype=dtypes)
+    # Create user_data with default float64 for numerical and object for categorical
+    user_data = pd.DataFrame(columns=numerical_features + categorical_features)
+    user_data[numerical_features] = user_data[numerical_features].astype('float64')
+    user_data[categorical_features] = user_data[categorical_features].astype('object')
 
     # Set numerical features (default to 0 or median if not provided)
     user_data.loc[0, 'GrLivArea'] = GrLivArea
