@@ -17,6 +17,7 @@ PAGES = {
     "Final Model": "app_pages.final_model",
     "Deployment": "app_pages.deployment",
     "Prediction": "app_pages.prediction_page",
+    "Price Visualization": "app_pages.price_visualization",  # New page
 }
 
 # Sidebar navigation
