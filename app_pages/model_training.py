@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
 def train_model():
+    """Train an XGBoost model and save it for house price prediction."""
     st.title("🔧 Model Training with XGBoost")
     st.write("Training the model using **XGBoost**.")
 
@@ -28,7 +29,7 @@ def train_model():
         st.error("❌ `SalePrice` column is missing. Ensure processed_train.csv includes target values for training.")
         return
 
-    y = data[target]  # Log-transformed target (already transformed in feature engineering)
+    y = data[target]  # Log-transformed target
     X = data.drop(columns=[target])
 
     # Load feature names to ensure correct column order
@@ -51,16 +52,20 @@ def train_model():
 
     st.write(f"📊 **Training Samples:** {X_train.shape[0]} | **Testing Samples:** {X_test.shape[0]}")
 
-    # Define and train XGBoost model
-    model = xgb.XGBRegressor(
-        n_estimators=500,
-        max_depth=6,
-        learning_rate=0.05,
-        subsample=0.8,
-        colsample_bytree=0.8,
-        random_state=42
-    )
+    # Use optimized hyperparameters from hyperparameter_tuning.py (example values; adjust based on your results)
+    best_params = {
+        "n_estimators": 600,  # Example from Optuna, adjust based on your output
+        "max_depth": 5,
+        "learning_rate": 0.03,
+        "subsample": 0.9,
+        "colsample_bytree": 0.7,
+        "min_child_weight": 3,
+        "gamma": 0.1,
+        "random_state": 42
+    }
 
+    # Define and train XGBoost model with optimized parameters
+    model = xgb.XGBRegressor(**best_params)
     model.fit(X_train, y_train, eval_set=[(X_test, y_test)], early_stopping_rounds=50, verbose=True)
 
     # Model evaluation
@@ -68,14 +73,14 @@ def train_model():
     mse = mean_squared_error(y_test, y_pred)
     rmse = np.sqrt(mse)
 
-    st.write(f"📉 **Model RMSE:** {rmse:,.2f}")
+    st.write(f"📉 **Model RMSE on Log-Transformed Prices:** {rmse:,.2f}")
 
     # Save trained model
     os.makedirs("models", exist_ok=True)
     with open("models/trained_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
-    st.success("✅ **XGBoost Model Trained & Saved!**")
+    st.success("✅ **XGBoost Model Trained & Saved with Optimized Parameters!**")
 
 def app():
     train_model()
