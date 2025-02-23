@@ -44,49 +44,49 @@ def app():
     TotalBsmtSF = st.number_input("TotalBsmtSF (Total Basement Size in SqFt)", min_value=0, max_value=5000, value=1000)
 
     # Hardcode common categorical values (based on Kaggle dataset defaults)
-    MSZoning = "RL"  # Most common zoning
-    Street = "Pave"  # Most common street type
-    Alley = "No"    # Assuming "No" for missing alleys
-    LotShape = "Reg"  # Most common lot shape
-    LandContour = "Lvl"  # Most common contour
-    Utilities = "AllPub"  # Most common utility
-    LotConfig = "Inside"  # Most common configuration
-    LandSlope = "Gtl"  # Most common slope
-    Neighborhood = "NAmes"  # Common neighborhood
-    Condition1 = "Norm"  # Most common condition
-    Condition2 = "Norm"  # Most common condition
-    BldgType = "1Fam"  # Most common building type
-    HouseStyle = "1Story"  # Most common house style
-    RoofStyle = "Gable"  # Most common roof style
-    RoofMatl = "CompShg"  # Most common roof material
-    Exterior1st = "VinylSd"  # Most common exterior
-    Exterior2nd = "VinylSd"  # Most common exterior
-    MasVnrType = "None"  # Most common masonry veneer
-    ExterQual = "TA"  # Most common exterior quality
-    ExterCond = "TA"  # Most common exterior condition
-    Foundation = "PConc"  # Most common foundation
-    BsmtQual = "TA"  # Most common basement quality
-    BsmtCond = "TA"  # Most common basement condition
-    BsmtExposure = "No"  # Most common basement exposure
-    BsmtFinType1 = "Unf"  # Most common basement finish type
-    BsmtFinType2 = "Unf"  # Most common second basement finish
-    Heating = "GasA"  # Most common heating type
-    HeatingQC = "Ex"  # Most common heating quality
-    CentralAir = "Y"  # Most common central air
-    Electrical = "SBrkr"  # Most common electrical
-    KitchenQual = "TA"  # Most common kitchen quality
-    Functional = "Typ"  # Most common functionality
-    FireplaceQu = "No"  # Assuming "No" for no fireplace
-    GarageType = "Attchd"  # Most common garage type
-    GarageFinish = "Unf"  # Most common garage finish
-    GarageQual = "TA"  # Most common garage quality
-    GarageCond = "TA"  # Most common garage condition
-    PavedDrive = "Y"  # Most common paved drive
-    PoolQC = "No"  # Assuming "No" for no pool
-    Fence = "No"  # Assuming "No" for no fence
-    MiscFeature = "No"  # Assuming "No" for no miscellaneous feature
-    SaleType = "WD"  # Most common sale type
-    SaleCondition = "Normal"  # Most common sale condition
+    MSZoning = "RL"
+    Street = "Pave"
+    Alley = "No"
+    LotShape = "Reg"
+    LandContour = "Lvl"
+    Utilities = "AllPub"
+    LotConfig = "Inside"
+    LandSlope = "Gtl"
+    Neighborhood = "NAmes"
+    Condition1 = "Norm"
+    Condition2 = "Norm"
+    BldgType = "1Fam"
+    HouseStyle = "1Story"
+    RoofStyle = "Gable"
+    RoofMatl = "CompShg"
+    Exterior1st = "VinylSd"
+    Exterior2nd = "VinylSd"
+    MasVnrType = "None"
+    ExterQual = "TA"
+    ExterCond = "TA"
+    Foundation = "PConc"
+    BsmtQual = "TA"
+    BsmtCond = "TA"
+    BsmtExposure = "No"
+    BsmtFinType1 = "Unf"
+    BsmtFinType2 = "Unf"
+    Heating = "GasA"
+    HeatingQC = "Ex"
+    CentralAir = "Y"
+    Electrical = "SBrkr"
+    KitchenQual = "TA"
+    Functional = "Typ"
+    FireplaceQu = "No"
+    GarageType = "Attchd"
+    GarageFinish = "Unf"
+    GarageQual = "TA"
+    GarageCond = "TA"
+    PavedDrive = "Y"
+    PoolQC = "No"
+    Fence = "No"
+    MiscFeature = "No"
+    SaleType = "WD"
+    SaleCondition = "Normal"
 
     # Define numerical and categorical features
     numerical_features = ['Id', 'MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual', 'OverallCond', 'YearBuilt', 
@@ -119,7 +119,7 @@ def app():
         if feature not in ['GrLivArea', 'OverallQual', 'GarageCars', 'YearBuilt', 'TotalBsmtSF']:
             user_data.loc[0, feature] = 0
 
-    # Set categorical features with hardcoded values (no dtype warning since 'object' is used)
+    # Set categorical features with hardcoded values
     user_data.loc[0, 'MSZoning'] = MSZoning
     user_data.loc[0, 'Street'] = Street
     user_data.loc[0, 'Alley'] = Alley
@@ -164,20 +164,21 @@ def app():
     user_data.loc[0, 'SaleType'] = SaleType
     user_data.loc[0, 'SaleCondition'] = SaleCondition
 
-    # Show only user-provided inputs and key categorical defaults
-    user_input_summary = {
-        "GrLivArea": GrLivArea,
-        "OverallQual": OverallQual,
-        "GarageCars": GarageCars,
-        "YearBuilt": YearBuilt,
-        "TotalBsmtSF": TotalBsmtSF,
-        "MSZoning": MSZoning,
-        "Neighborhood": Neighborhood,
-        "BldgType": BldgType,
-        "HouseStyle": HouseStyle
-    }
-    st.write("🔍 **User Input Summary:**")
-    st.json(user_input_summary)
+    # Show User Input Summary in an optional expander
+    with st.expander("View User Input Summary", expanded=False):
+        user_input_summary = {
+            "GrLivArea": GrLivArea,
+            "OverallQual": OverallQual,
+            "GarageCars": GarageCars,
+            "YearBuilt": YearBuilt,
+            "TotalBsmtSF": TotalBsmtSF,
+            "MSZoning": MSZoning,
+            "Neighborhood": Neighborhood,
+            "BldgType": BldgType,
+            "HouseStyle": HouseStyle
+        }
+        st.write("🔍 **User Input Summary:**")
+        st.json(user_input_summary)
 
     # Transform user input using the preprocessor
     try:
