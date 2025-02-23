@@ -8,9 +8,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 
 def train_model():
-    """Train an XGBoost model and save it for house price prediction."""
+    """Train an XGBoost model with optimized hyperparameters and save it for house price prediction."""
     st.title("🔧 Model Training with XGBoost")
-    st.write("Training the model using **XGBoost**.")
+    st.write("Training the model using **XGBoost** with optimized hyperparameters.")
 
     data_path = "data/processed_train.csv"
 
@@ -52,17 +52,24 @@ def train_model():
 
     st.write(f"📊 **Training Samples:** {X_train.shape[0]} | **Testing Samples:** {X_test.shape[0]}")
 
-    # Use optimized hyperparameters from hyperparameter_tuning.py (example values; adjust based on your results)
-    best_params = {
-        "n_estimators": 600,  # Example from Optuna, adjust based on your output
-        "max_depth": 5,
-        "learning_rate": 0.03,
-        "subsample": 0.9,
-        "colsample_bytree": 0.7,
-        "min_child_weight": 3,
-        "gamma": 0.1,
-        "random_state": 42
-    }
+    # Load best parameters from hyperparameter tuning
+    best_params_path = "models/best_params.pkl"
+    if not os.path.exists(best_params_path):
+        st.warning("⚠️ Best parameters not found. Using default hyperparameters.")
+        best_params = {
+            "n_estimators": 600,
+            "max_depth": 5,
+            "learning_rate": 0.03,
+            "subsample": 0.9,
+            "colsample_bytree": 0.7,
+            "min_child_weight": 3,
+            "gamma": 0.1,
+            "random_state": 42,
+            "enable_categorical": False
+        }
+    else:
+        with open(best_params_path, "rb") as f:
+            best_params = pickle.load(f)
 
     # Define and train XGBoost model with optimized parameters
     model = xgb.XGBRegressor(**best_params)
@@ -73,11 +80,11 @@ def train_model():
     mse = mean_squared_error(y_test, y_pred)
     rmse = np.sqrt(mse)
 
-    st.write(f"📉 **Model RMSE on Log-Transformed Prices:** {rmse:,.2f}")
+    st.write(f"📉 **Model RMSE on Log-Transformed Prices:** {rmse:.4f}")
 
-    # Save trained model
+    # Save trained model as optimized_model.pkl
     os.makedirs("models", exist_ok=True)
-    with open("models/trained_model.pkl", "wb") as f:
+    with open("models/optimized_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
     st.success("✅ **XGBoost Model Trained & Saved with Optimized Parameters!**")
