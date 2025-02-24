@@ -21,12 +21,12 @@ def app():
     # Handle missing values for numerical columns with median
     for col in numeric_columns:
         if data[col].isnull().sum() > 0:
-            data[col].fillna(data[col].median(), inplace=True)
+            data[col] = data[col].fillna(data[col].median())  # Replace inplace=True with direct assignment for pandas 3.0 compatibility
 
     # Handle missing values for categorical columns with mode
     for col in categorical_columns:
         if data[col].isnull().sum() > 0:
-            data[col].fillna(data[col].mode()[0], inplace=True)
+            data[col] = data[col].fillna(data[col].mode()[0])  # Replace inplace=True with direct assignment
 
     # Ensure SalePrice is positive (remove zero or negative values)
     if "SalePrice" in data.columns:
@@ -37,7 +37,7 @@ def app():
     os.makedirs("data", exist_ok=True)  # Create 'data' directory if it doesn’t exist
     data.to_csv(cleaned_data_path, index=False)
 
-    st.write("### Data Cleaning Completed")
+    st.write("Data Cleaning Completed")
     st.write(f"Saved as `{cleaned_data_path}`.")
     st.write("Summary statistics after cleaning:")
     st.write(data.describe())

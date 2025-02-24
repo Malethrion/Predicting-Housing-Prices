@@ -1,6 +1,7 @@
 import streamlit as st
 
 def app():
+    """Display the home page with project overview and business requirements."""
     st.title("Home Page")
     st.write("Welcome to the Predicting Housing Prices App!")
     st.markdown("""

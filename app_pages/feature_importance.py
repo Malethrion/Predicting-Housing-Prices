@@ -4,11 +4,12 @@ import pickle
 import matplotlib.pyplot as plt
 
 def app():
+    """Display feature importance from the trained model."""
     st.title("Feature Importance")
 
     # Load model and feature names
     try:
-        with open("models/optimized_model.pkl", "rb") as f:  # Changed from trained_model.pkl to optimized_model.pkl
+        with open("models/optimized_model.pkl", "rb") as f:
             model = pickle.load(f)
         with open("models/feature_names.pkl", "rb") as f:
             feature_names = pickle.load(f)
@@ -29,7 +30,7 @@ def app():
     fi_df = fi_df.sort_values(by="Importance", ascending=False)
 
     # Plot feature importance
-    st.write("### Feature Importance Ranking")
+    st.write("Feature Importance Ranking")
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.barh(fi_df["Feature"].head(20), fi_df["Importance"].head(20))
     ax.set_xlabel("Importance")

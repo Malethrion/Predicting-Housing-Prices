@@ -4,20 +4,19 @@ import xgboost as xgb
 import pandas as pd
 import numpy as np
 import os
-import pickle  # Add this line
+import pickle
 from sklearn.model_selection import cross_val_score
 
 def app():
-    """Optimize XGBoost hyperparameters using Optuna and display results in Streamlit."""
-    st.title("🔧 Hyperparameter Tuning with Optuna")
+    """Optimize XGBoost hyperparameters using Optuna and display results."""
+    st.title("Hyperparameter Tuning with Optuna")
 
     data_path = "data/processed_train.csv"
-
     if not os.path.exists(data_path):
-        st.error(f"❌ File not found: `{data_path}`. Run feature engineering first.")
+        st.error(f"File not found: {data_path}. Run feature engineering first.")
         return
 
-    st.success(f"✅ Data file found: `{data_path}`")
+    st.write("Data file found: {data_path}")
 
     # Load dataset
     data = pd.read_csv(data_path)
@@ -35,7 +34,7 @@ def app():
             "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
             "gamma": trial.suggest_float("gamma", 0, 5),
             "random_state": 42,
-            "enable_categorical": False  # Explicitly disable to avoid FutureWarnings
+            "enable_categorical": False  # Disable to avoid warnings
         }
         
         model = xgb.XGBRegressor(**params)
@@ -54,11 +53,11 @@ def app():
 
     # Display results
     best_params = study.best_params
-    st.write("### Best Hyperparameters:")
+    st.write("Best Hyperparameters:")
     st.json(best_params)
 
     best_rmse = -study.best_value
-    st.write(f"### Best Cross-Validation RMSE (Log-Transformed): {best_rmse:.4f}")
+    st.write(f"Best Cross-Validation RMSE (Log-Transformed): {best_rmse:.4f}")
 
     # Save best parameters and optionally train a final model
     os.makedirs("models", exist_ok=True)
@@ -71,7 +70,7 @@ def app():
     with open("models/optimized_model.pkl", "wb") as f:
         pickle.dump(final_model, f)
 
-    st.success("✅ Hyperparameters optimized and model saved with best parameters!")
+    st.write("Hyperparameters optimized and model saved with best parameters!")
 
 if __name__ == "__main__":
     app()

@@ -6,7 +6,7 @@ import os
 
 def app():
     """Provide a user interface to predict house prices based on input features."""
-    st.title("🏡 House Price Prediction")
+    st.title("House Price Prediction")
 
     # Load trained model, preprocessor, and feature names
     model_path = "models/optimized_model.pkl"  # Use optimized model for better predictions
@@ -14,13 +14,13 @@ def app():
     feature_names_path = "models/feature_names.pkl"
 
     if not os.path.exists(model_path):
-        st.error(f"❌ Optimized model file not found at `{model_path}`. Run hyperparameter tuning and model training first.")
+        st.error(f"Optimized model file not found at `{model_path}`. Run hyperparameter tuning and model training first.")
         return
     if not os.path.exists(preprocessor_path):
-        st.error(f"❌ Preprocessor file not found at `{preprocessor_path}`. Run feature engineering first.")
+        st.error(f"Preprocessor file not found at `{preprocessor_path}`. Run feature engineering first.")
         return
     if not os.path.exists(feature_names_path):
-        st.error(f"❌ Feature names file not found at `{feature_names_path}`. Run feature engineering first.")
+        st.error(f"Feature names file not found at `{feature_names_path}`. Run feature engineering first.")
         return
 
     try:
@@ -31,10 +31,10 @@ def app():
         with open(feature_names_path, "rb") as f:
             expected_features = pickle.load(f)
     except Exception as e:
-        st.error(f"❌ Error loading files: {e}")
+        st.error(f"Error loading files: {e}")
         return
 
-    st.success("✅ Optimized Model, Preprocessor, and Feature Names Loaded!")
+    st.write("Optimized Model, Preprocessor, and Feature Names Loaded!")
 
     # User inputs (numerical and categorical features)
     st.subheader("Enter House Features:")
@@ -124,7 +124,7 @@ def app():
     user_data.loc[0, 'MasVnrArea'] = 400  # Larger masonry veneer area
     user_data.loc[0, 'BsmtFinSF1'] = 1500  # Larger finished basement area
     user_data.loc[0, 'BsmtUnfSF'] = 500  # Unfinished basement area
-    user_data.loc[0, '1stFlrSf'] = 2000  # Larger first floor size
+    user_data.loc[0, '1stFlrSF'] = 2000  # Larger first floor size
     user_data.loc[0, '2ndFlrSF'] = 1500  # Larger second floor size (for 2Story)
     user_data.loc[0, 'BsmtFullBath'] = 1  # Full basement bathroom
     user_data.loc[0, 'FullBath'] = 3  # More full bathrooms for higher value
@@ -199,32 +199,32 @@ def app():
             "BldgType": BldgType,
             "HouseStyle": HouseStyle
         }
-        st.write("🔍 **User Input Summary:**")
+        st.write("User Input Summary:")
         st.json(user_input_summary)
 
     # Transform user input using the preprocessor
     try:
         transformed_data = preprocessor.transform(user_data)
     except Exception as e:
-        st.error(f"❌ Preprocessing Error: {e}")
-        st.write("🔍 **Expected Features by Preprocessor:**", preprocessor.get_feature_names_out().tolist())
+        st.error(f"Preprocessing Error: {e}")
+        st.write("Expected Features by Preprocessor:", preprocessor.get_feature_names_out().tolist())
         return
 
     # Ensure feature order matches training (DataFrame for debugging, optional)
     transformed_df = pd.DataFrame(transformed_data, columns=expected_features)
 
     # Debug: Print transformed data shape (optional, hidden from users)
-    st.write("🔍 **Transformed Input Data Shape:**", transformed_df.shape)
+    st.write("Transformed Input Data Shape:", transformed_df.shape)
 
     # Predict
     log_price = model.predict(transformed_data)
     predicted_price = np.expm1(log_price[0])  # Convert log price back to normal
 
-    st.subheader("💰 Predicted House Price:")
-    st.success(f"Predicted Price: **${predicted_price:,.2f}**")
+    st.subheader("Predicted House Price:")
+    st.success(f"Predicted Price: ${predicted_price:,.2f}")
 
     # Debug: Print raw prediction for verification (optional, hidden from users)
-    st.write(f"🔍 **Raw Log Price Prediction:** {log_price[0]}")
+    st.write(f"Raw Log Price Prediction: {log_price[0]}")
 
 if __name__ == "__main__":
     app()
