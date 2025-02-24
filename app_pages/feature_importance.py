@@ -8,7 +8,7 @@ def app():
 
     # Load model and feature names
     try:
-        with open("models/trained_model.pkl", "rb") as f:
+        with open("models/optimized_model.pkl", "rb") as f:  # Changed from trained_model.pkl to optimized_model.pkl
             model = pickle.load(f)
         with open("models/feature_names.pkl", "rb") as f:
             feature_names = pickle.load(f)
