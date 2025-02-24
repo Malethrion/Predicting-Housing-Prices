@@ -7,17 +7,14 @@ st.set_page_config(page_title="Predicting Housing Prices", layout="wide")
 # Define available pages
 PAGES = {
     "Home": "app_pages.home_page",
-    "Correlation Study": "app_pages.correlation_study",
     "Data Cleaning": "app_pages.data_cleaning",
     "Feature Engineering": "app_pages.feature_engineering",
     "Model Training": "app_pages.model_training",
-    "Model Evaluation": "app_pages.model_evaluation",
     "Hyperparameter Tuning": "app_pages.hyperparameter_tuning",
     "Feature Importance": "app_pages.feature_importance",
-    "Final Model": "app_pages.final_model",
-    "Deployment": "app_pages.deployment",
-    "Prediction": "app_pages.prediction_page",
+    "Correlation Study": "app_pages.correlation_study",
     "Price Visualization": "app_pages.price_visualization",
+    "Prediction": "app_pages.prediction_page",
 }
 
 # Sidebar navigation
