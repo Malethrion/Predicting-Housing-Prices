@@ -1,7 +1,7 @@
 import optuna
 import xgboost as xgb
 import pandas as pd
-import numpy np
+import numpy as np
 from sklearn.model_selection import cross_val_score
 
 # Load dataset
@@ -10,6 +10,7 @@ X = data.drop(columns=["SalePrice"])
 y = data["SalePrice"]
 
 def objective(trial):
+    """Optimize XGBoost hyperparameters for house price prediction."""
     params = {
         "n_estimators": trial.suggest_int("n_estimators", 200, 1000, step=100),
         "max_depth": trial.suggest_int("max_depth", 3, 15),
@@ -23,12 +24,12 @@ def objective(trial):
     }
     model = xgb.XGBRegressor(**params)
     scores = cross_val_score(model, X, y, cv=5, scoring="neg_root_mean_squared_error")
-    return -np.mean(scores)
+    return -np.mean(scores)  # Minimize RMSE
 
-# Reduce verbosity
+# Reduce verbosity for cleaner output
 optuna.logging.set_verbosity(optuna.logging.WARNING)
 
-# Optimize
+# Optimize hyperparameters
 study = optuna.create_study(direction="minimize")
 study.optimize(objective, n_trials=100)
 
@@ -37,7 +38,7 @@ import os
 os.makedirs("models", exist_ok=True)
 with open("models/best_params.pkl", "wb") as f:
     pickle.dump(study.best_params, f)
-with open("models/best_rmse.pkl", "wb") as f:  # Save best RMSE for display
+with open("models/best_rmse.pkl", "wb") as f:
     pickle.dump(-study.best_value, f)
 
 print(f"Best parameters: {study.best_params}")
