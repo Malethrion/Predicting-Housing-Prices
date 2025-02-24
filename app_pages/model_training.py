@@ -71,9 +71,13 @@ def train_model():
         with open(best_params_path, "rb") as f:
             best_params = pickle.load(f)
 
+    # Add early_stopping_rounds to the parameters
+    best_params["early_stopping_rounds"] = 50  # Set early stopping rounds here
+    best_params["eval_metric"] = "rmse"  # Optional: specify evaluation metric for early stopping
+
     # Define and train XGBoost model with optimized parameters
     model = xgb.XGBRegressor(**best_params)
-    model.fit(X_train, y_train, eval_set=[(X_test, y_test)], early_stopping_rounds=50, verbose=True)
+    model.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=True)
 
     # Model evaluation
     y_pred = model.predict(X_test)
