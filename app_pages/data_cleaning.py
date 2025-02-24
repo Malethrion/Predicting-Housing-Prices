@@ -8,7 +8,7 @@ def app():
 
     data_path = "data/train.csv"
     if not os.path.exists(data_path):
-        st.error(f"File not found: {data_path}. Please ensure the dataset is available.")
+        st.error(f"File not found: {data_path}. Please ensure the dataset is available in the 'data' directory.")
         return
 
     # Load dataset

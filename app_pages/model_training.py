@@ -17,6 +17,11 @@ def train_model():
         st.error(f"File not found: {data_path}. Run feature engineering first.")
         return
 
+    best_params_path = "models/best_params.pkl"
+    if not os.path.exists(best_params_path):
+        st.error(f"Best parameters not found at `{best_params_path}`. Run hyperparameter tuning first.")
+        return
+
     st.write("Data file found: {data_path}")
 
     # Load the processed dataset
@@ -52,23 +57,8 @@ def train_model():
     st.write(f"Training Samples: {X_train.shape[0]} | Testing Samples: {X_test.shape[0]}")
 
     # Load best parameters from hyperparameter tuning
-    best_params_path = "models/best_params.pkl"
-    if not os.path.exists(best_params_path):
-        st.warning("Best parameters not found. Using default hyperparameters.")
-        best_params = {
-            "n_estimators": 600,
-            "max_depth": 5,
-            "learning_rate": 0.03,
-            "subsample": 0.9,
-            "colsample_bytree": 0.7,
-            "min_child_weight": 3,
-            "gamma": 0.1,
-            "random_state": 42,
-            "enable_categorical": False
-        }
-    else:
-        with open(best_params_path, "rb") as f:
-            best_params = pickle.load(f)
+    with open(best_params_path, "rb") as f:
+        best_params = pickle.load(f)
 
     # Add early_stopping_rounds to the parameters
     best_params["early_stopping_rounds"] = 50  # Set early stopping rounds here
