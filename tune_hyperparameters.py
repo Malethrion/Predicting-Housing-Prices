@@ -2,6 +2,7 @@ import optuna
 import xgboost as xgb
 import pandas as pd
 import numpy as np
+import pickle  # Added for saving parameters and RMSE
 from sklearn.model_selection import cross_val_score
 
 # Load dataset
