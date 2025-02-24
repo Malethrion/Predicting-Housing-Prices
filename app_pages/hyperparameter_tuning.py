@@ -41,15 +41,18 @@ def app():
         scores = cross_val_score(model, X, y, cv=5, scoring="neg_root_mean_squared_error")
         return -np.mean(scores)  # Minimize RMSE
 
-    # Run optimization with progress bar
+    # Reduce Optuna log verbosity
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
+
+    # Run optimization with progress bar (increased to 100 trials)
     st.write("Optimizing hyperparameters with Optuna...")
     progress_bar = st.progress(0)
     study = optuna.create_study(direction="minimize")
 
     def on_trial_end(study, trial):
-        progress_bar.progress((trial.number + 1) / 50)  # Update progress for 50 trials
+        progress_bar.progress((trial.number + 1) / 100)  # Update for 100 trials
 
-    study.optimize(objective, n_trials=50, callbacks=[on_trial_end])
+    study.optimize(objective, n_trials=100, callbacks=[on_trial_end])
 
     # Display results
     best_params = study.best_params

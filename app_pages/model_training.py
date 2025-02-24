@@ -76,7 +76,7 @@ def train_model():
 
     # Define and train XGBoost model with optimized parameters
     model = xgb.XGBRegressor(**best_params)
-    model.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=True)
+    model.fit(X_train, y_train, eval_set=[(X_test, y_test)], verbose=False)  # Reduced verbosity
 
     # Model evaluation
     y_pred = model.predict(X_test)
