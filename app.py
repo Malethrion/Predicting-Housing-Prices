@@ -20,13 +20,13 @@ PAGES = {
 st.sidebar.title("Navigation")
 selected_page = st.sidebar.selectbox("Choose a page", list(PAGES.keys()))
 
-# ✅ FIX 1: Update query params correctly (fix disappearing pages)
+# Fix 1: Update query parameters to prevent pages from disappearing
 if "page" not in st.query_params or st.query_params["page"] != selected_page:
     st.query_params.update({"page": selected_page})
 
-# ✅ FIX 2: Always load the selected page (force refresh)
+# Fix 2: Load the selected page dynamically
 try:
-    module = importlib.import_module(PAGES[selected_page])  # Import module dynamically
+    module = importlib.import_module(PAGES[selected_page])  # Import the module dynamically
     if hasattr(module, "app"):
         module.app()  # Call the app function of the selected module
     else:
