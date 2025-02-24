@@ -13,7 +13,6 @@ PAGES = {
     "Hyperparameter Tuning": "app_pages.hyperparameter_tuning",
     "Feature Importance": "app_pages.feature_importance",
     "Correlation Study": "app_pages.correlation_study",
-    "Price Visualization": "app_pages.price_visualization",
     "Prediction": "app_pages.prediction_page",
 }
 
