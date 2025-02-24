@@ -8,7 +8,7 @@ st.set_page_config(page_title="Predicting Housing Prices", layout="wide")
 PAGES = {
     "Home": "app_pages.home_page",
     "Correlation Study": "app_pages.correlation_study",
-    "House Price Prediction": "app_pages.prediction_page",  # Updated for consistency
+    "Predicting House Prices": "app_pages.prediction_page",  # Updated for consistency
     "Feature Importance": "app_pages.feature_importance",
     "Hyperparameter Tuning": "app_pages.hyperparameter_tuning",
 }

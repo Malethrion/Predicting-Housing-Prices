@@ -6,7 +6,7 @@ import os
 
 def app():
     """Provide a user interface to predict house prices based on input features."""
-    st.title("House Price Prediction")
+    st.title("Predicting House Prices")
 
     # Load trained model, preprocessor, and feature names
     model_path = "models/optimized_model.pkl"  # Use optimized model for better predictions
