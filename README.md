@@ -120,21 +120,48 @@ The dataset is sourced from [Kaggle’s "House Prices - Advanced Regression Tech
 
 ## Dashboard Design
 
-### Page 1: Home Page
+The Predicting Housing Prices app is structured as an interactive Streamlit web application with multiple pages, categorized as user-facing (visible in the dashboard) and backend (for development and processing). Below is the design for each page:
+
+### User-Facing Pages (Visible in the Dashboard)
+
+#### Page 1: Home Page
 - **Section 1 - Overview**:
-  - Introduction to the project, dataset, and business requirements.
+  - Introduction to the project, dataset, and business requirements, as defined in `home_page.py`.
 
-### Page 2: Correlation Study
-- Display correlation heatmaps, scatter plots, and bar charts to identify key predictors of house prices.
-- Allow users to explore relationships between features and `SalePrice`.
+#### Page 2: Correlation Study
+- Display correlation heatmaps, scatter plots, and bar charts to identify key predictors of house prices, as implemented in `correlation_study.py`.
+- Allow users to explore relationships between features and `SalePrice`, with options for:
+  - Interactive feature selection for scatter plots (e.g., `GrLivArea`, `OverallQual`).
+  - Additional visualizations like histograms or box plots of `SalePrice` by feature.
+- Note: Users can toggle between full correlation heatmaps and simplified views focusing on significant correlations with `SalePrice`.
 
-### Page 3: House Price Prediction
-- Provide an input form for users to enter property features (e.g., `GrLivArea`, `OverallQual`).
-- Display the predicted house price and optional feature summaries.
+#### Page 3: House Price Prediction
+- Provide an input form for users to enter property features (e.g., `GrLivArea`, `OverallQual`, `GarageCars`, `YearBuilt`, `TotalBsmtSF`), as implemented in `prediction_page.py`.
+- Display the predicted house price in USD and optional feature summaries (e.g., in an expander for advanced users).
+- Include error handling for invalid or missing inputs, ensuring a robust user experience.
 
-### Page 4: Feature Importance
-- Show a bar chart of the top 20 features influencing `SalePrice` from the trained model.
-- Include model performance metrics (e.g., RMSE, R-squared).
+#### Page 4: Feature Importance
+- Show a bar chart of the top 20 features influencing `SalePrice` from the trained XGBoost model, as implemented in `feature_importance.py`.
+- Include model performance metrics (e.g., RMSE, R-squared) to evaluate prediction accuracy.
+- Offer optional sorting or filtering of features for deeper analysis.
+
+#### Page 5: Hyperparameter Tuning
+- Display the optimized hyperparameters and cross-validation RMSE from offline tuning, as implemented in `hyperparameter_tuning.py`.
+- Provide a summary of the best parameters and model performance, ensuring users understand the optimization process without requiring interaction.
+
+### Backend Pages (Not Visible in the Dashboard, for Development/Processing)
+
+#### Page 6: Data Cleaning
+- Process the raw dataset (`train.csv`) to handle missing values, outliers, and ensure data quality, as implemented in `data_cleaning.py`.
+- Save the cleaned data to `data/final_cleaned_train.csv` for further use, not exposed to users.
+
+#### Page 7: Feature Engineering
+- Transform the cleaned data with scaling (`MinMaxScaler`) and encoding (`OneHotEncoder`), as implemented in `feature_engineering.py`.
+- Save processed data to `data/processed_train.csv` and preprocessing objects to `models/preprocessor.pkl` and `models/feature_names.pkl`, not exposed to users.
+
+#### Page 8: Model Training
+- Train the XGBoost regression model using optimized hyperparameters and evaluate performance, as implemented in `model_training.py`.
+- Save the trained model to `models/optimized_model.pkl`, not exposed to users.
 
 [Back to top](#table-of-contents)
 
