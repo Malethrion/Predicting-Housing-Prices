@@ -3,6 +3,8 @@ import optuna
 import xgboost as xgb
 import pandas as pd
 import numpy as np
+import os
+import pickle  # Add this line
 from sklearn.model_selection import cross_val_score
 
 def app():
@@ -45,7 +47,7 @@ def app():
     progress_bar = st.progress(0)
     study = optuna.create_study(direction="minimize")
 
-    def on_trial_end(trial, state, values):
+    def on_trial_end(study, trial):
         progress_bar.progress((trial.number + 1) / 50)  # Update progress for 50 trials
 
     study.optimize(objective, n_trials=50, callbacks=[on_trial_end])
