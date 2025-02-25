@@ -73,7 +73,7 @@ The dataset is sourced from [Kaggle’s "House Prices - Advanced Regression Tech
 
 - **Business Requirement 2**: Regression Model Development
   - Build an XGBoost regression model, optimize hyperparameters with Optuna, and validate using train-test splits and cross-validation.
-  - Implement prediction functionality in the “Prediction” page, allowing users to input features and receive price estimates.
+  - Implement prediction functionality in the “House Price Prediction” page, allowing users to input features and receive price estimates.
 
 [Back to top](#table-of-contents)
 
@@ -182,7 +182,7 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 
 ### Other Technologies
 - [Git](https://git-scm.com/) - Version control.
-- [Render](https://render.com/) - Cloud deployment platform (previously Heroku, updated for current support).
+- [Render](https://render.com/) - Cloud deployment platform.
 
 [Back to top](#table-of-contents)
 
@@ -196,22 +196,13 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 | Correlation Study        | View correlation heatmap        | Heatmap displays feature correlations with `SalePrice` | Functions as intended                              |
 | House Price Prediction   | Input features and predict      | Predicted price displayed in USD                     | Functions as intended                              |
 | Feature Importance       | View feature importance chart   | Bar chart shows top 20 features by importance        | Functions as intended                              |
-
-**Instructions for Completion**:
-- Add specific test cases for each page (e.g., input values for “House Price Prediction,” specific features for “Correlation Study”). For example:
-  - For “House Price Prediction,” test with `GrLivArea=3000`, `OverallQual=9`, `GarageCars=3`, `YearBuilt=2020`, `TotalBsmtSF=2000` and verify the predicted price is reasonable (e.g., ~$500,000–$700,000).
-  - For “Correlation Study,” verify the heatmap shows strong correlations (e.g., `OverallQual`, `GrLivArea` with `SalePrice`).
-- Document any edge cases or issues (e.g., missing data, invalid inputs). If no issues, update “Known Issues” below with “No known issues at this time.”
+| Hyperparameter Tuning    | View tuning results             | Optimized parameters and RMSE displayed instantly    | Functions as intended                              |
 
 [Back to top](#table-of-contents)
 
 ## Known Issues
 
 No known issues at this time.
-
-**Instructions for Completion**:
-- If you discover any bugs or inconsistencies during testing (e.g., slow load times, prediction errors), list them here with details (e.g., “Prediction page fails with missing feature inputs”).
-- Update after testing all pages and scripts. If no issues, leave as “No known issues at this time.”
 
 [Back to top](#table-of-contents)
 
