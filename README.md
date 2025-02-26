@@ -233,6 +233,8 @@ After completing these steps, run the Streamlit app: streamlit run app.py
 
 Ensure all .csv and .pkl files are generated successfully. If errors occur, verify data/train.csv exists and requirements.txt is installed. Take screenshots of terminal output or file generation (e.g., outputs/backend_execution.png) for your submission.
 
+[Back to top](#table-of-contents)
+
 ## Deployment
 
 The project is deployed to Render. Follow these steps to deploy:
@@ -244,7 +246,7 @@ The project is deployed to Render. Follow these steps to deploy:
 2. **Clone the Repository**:
 - Clone this repository using:
    ```bash
-   git clone https://github.com/your-username/Predicting-Housing-Prices.git
+   git clone https://github.com/Malethrion/Predicting-Housing-Prices.git
 
 - Navigate to the project directory:
    ```bash
@@ -267,3 +269,96 @@ The project is deployed to Render. Follow these steps to deploy:
    python app_pages/feature_engineering.py
    python tune_hyperparameters.py
    python app_pages/model_training.py
+
+- Commit these files to your Git repository or ensure they’re included in deployment (temporarily remove models/*.pkl and data/*.csv from .gitignore if needed):
+   ```bash
+   # .gitignore (temporary update for deployment)
+   venv/
+   __pycache__/
+   *.ipynb_checkpoints/
+
+5. **Deploy to Render**:
+- Log in to Render via the CLI:
+ - Go to Render Account Settings, reveal your API key, and run:
+   ```bash
+   render login
+ - Paste your API key when prompted.
+
+- Create a new Render app:
+ - Run render apps create and select “Web Service.”
+ - Choose your GitHub repository and branch (e.g., main).
+ - Set the runtime to Python 3.8+ (Render-22 stack).
+ - Configure the build command: pip install -r requirements.txt.
+ - Set the start command: streamlit run app.py --server.port $PORT.
+
+- Deploy the app by pushing changes to GitHub:
+   ```bash
+   git push origin main
+
+- Monitor deployment logs in the Render dashboard. Once complete, access your app at the provided URL.
+
+6. **Troubleshooting**:
+- If the slug size is too large, add large files (e.g., .ipynb, large datasets) to .slugignore:
+   ```text
+   # .slugignore
+   jupyter_notebooks/*.ipynb
+   data/*.csv
+
+- Take a screenshot of your Render dashboard or deployment logs (e.g., outputs/render_deployment.png) for your submission.
+
+[Back to top](#table-of-contents)
+
+## Forking and Cloning
+
+### Forking
+
+1. Navigate to the [GitHub repository](https://github.com/Malethrion/Predicting-Housing-Prices).
+
+2. Click the Fork button in the top-right corner to create a copy in your GitHub account.
+
+### Cloning
+
+1. Click the Code button on the repository page and copy the HTTPS URL.
+
+2. In your terminal, clone the repository:
+   ```bash
+   git clone https://github.com/Malethrion/Predicting-Housing-Prices.git
+
+3. Navigate to the project directory:
+   ```bash
+   cd Predicting-Housing-Prices
+
+[Back to top](#table-of-contents)
+
+## Installing Requirements
+
+1. Run the following command to install the required packages:
+   ```bash
+   pip install -r requirements.txt
+
+2. Ensure your requirements.txt includes only the necessary dependencies:
+   ```bash
+   numpy==1.26.4
+   pandas==2.2.3
+   matplotlib==3.8.0
+   seaborn==0.13.2
+   scikit-learn==1.6.1
+   streamlit==1.42.2
+   optuna==4.2.1
+   xgboost==2.1.4
+
+[Back to top](#table-of-contents)
+
+## Credits
+
+### Data Sources
+- [Kaggle’s "House Prices - Advanced Regression Techniques" dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data)
+
+[Back to top](#table-of-contents)
+
+## Acknowledgements
+- Thanks to Mo Shami for guidance and feedback throughout the project.
+- Appreciation to Code Institute for providing the learning platform and resources.
+
+[Back to top](#table-of-contents)
+
