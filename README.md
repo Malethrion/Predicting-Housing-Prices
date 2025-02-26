@@ -194,11 +194,20 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 | Feature                  | Action                          | Expected Result                                      | Actual Result                                      |
 |--------------------------|---------------------------------|-----------------------------------------------------|---------------------------------------------------|
 | Home Page                | View project summary            | Page loads with introduction and business requirements | Functions as intended                              |
-| Correlation Study        | View correlation heatmap        | Heatmap displays feature correlations with `SalePrice` | Functions as intended                              |
+| Correlation Study        | View correlation and price visualization     | Displays simplified heatmap: only significant correlations with `SalePrice`, full correlation heatmap for all numeric features, price distribution, interactive feature vs. `SalePrice` scatter plots and top 10 correlated features with `SalePrice` | Functions as intended                              |
 | House Price Prediction   | Input features and predict      | Predicted price displayed in USD                     | Functions as intended                              |
-| Feature Importance       | View feature importance chart   | Bar chart shows top 20 features by importance        | Functions as intended                              |
+| Feature Importance       | View feature importance chart   | Bar chart shows top 20 features by importance        | Functions as intended                              
 | Hyperparameter Tuning    | View tuning results             | Optimized parameters and RMSE displayed instantly    | Functions as intended                              |
-| *Add specific test cases here, e.g., test with `GrLivArea=3000`, `OverallQual=9`, `GarageCars=3`, `YearBuilt=2020`, `TotalBsmtSF=2000` in House Price Prediction and verify a reasonable price (e.g., ~$500,000–$700,000). Include edge cases like missing inputs or invalid values.* |
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Home.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Navigation%20bar.png?raw=true)
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
 
 [Back to top](#table-of-contents)
 
