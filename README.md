@@ -14,6 +14,7 @@
 - [Technologies Used](#technologies-used)
 - [Testing](#testing)
 - [Known Issues](#known-issues)
+- [Installation and Setup](#installation-and-setup)
 - [Deployment](#deployment)
 - [Forking and Cloning](#forking-and-cloning)
 - [Installing Requirements](#installing-requirements)
@@ -197,24 +198,72 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 | House Price Prediction   | Input features and predict      | Predicted price displayed in USD                     | Functions as intended                              |
 | Feature Importance       | View feature importance chart   | Bar chart shows top 20 features by importance        | Functions as intended                              |
 | Hyperparameter Tuning    | View tuning results             | Optimized parameters and RMSE displayed instantly    | Functions as intended                              |
+| *Add specific test cases here, e.g., test with `GrLivArea=3000`, `OverallQual=9`, `GarageCars=3`, `YearBuilt=2020`, `TotalBsmtSF=2000` in House Price Prediction and verify a reasonable price (e.g., ~$500,000–$700,000). Include edge cases like missing inputs or invalid values.* |
 
 [Back to top](#table-of-contents)
 
 ## Known Issues
 
 No known issues at this time.
+*If you discover bugs (e.g., slow load times, prediction errors), list them here with details (e.g., “Prediction page fails with missing `GrLivArea` input”). Update after testing all components.*
 
 [Back to top](#table-of-contents)
+
+## Installation and Setup
+
+To prepare the app for use, run the following backend processes in order to generate necessary data and model files before launching the Streamlit app:
+
+1. **Data Cleaning**:
+   ```bash
+   python app_pages/data_cleaning.py
+
+2. **Feature Engineering**:
+   ```bash
+   python app_pages/feature_engineering.py
+
+3. **Hyperparameter Tuning (Offline)**:
+   ```bash
+   python tune_hyperparameters.py
+
+4. **Model Training**:
+   ```bash
+   python app_pages/model_training.pya
+
+After completing these steps, run the Streamlit app: streamlit run app.py
+
+Ensure all .csv and .pkl files are generated successfully. If errors occur, verify data/train.csv exists and requirements.txt is installed. Take screenshots of terminal output or file generation (e.g., outputs/backend_execution.png) for your submission.
 
 ## Deployment
 
 The project is deployed to Render. Follow these steps to deploy:
 
 1. **Prerequisites**:
-   - Install Git and Python 3.8+ on your machine.
-   - Sign up for a Render account and install the Render CLI (`render`).
+- Install Git and Python 3.8+ on your machine.
+- Sign up for a Render account and install the Render CLI (render).
 
 2. **Clone the Repository**:
-   - Clone this repository using:
-     ```bash
-     git clone https://github.com/your-username/Predicting-Housing-Prices.git
+- Clone this repository using:
+   ```bash
+   git clone https://github.com/your-username/Predicting-Housing-Prices.git
+
+- Navigate to the project directory:
+   ```bash
+   cd Predicting-Housing-Prices
+
+3. **Set Up Environment**:  
+- Create a virtual environment and activate it:
+   ```bash
+   python -m venv venv
+   .\.venv\Scripts\activate  # Windows
+
+- Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+
+4. **Pre-Generate Backend Files**:
+- Run the backend processes locally as described in “Installation and Setup” to generate data/*.csv and models/*.pkl files:
+   ```bash
+   python app_pages/data_cleaning.py
+   python app_pages/feature_engineering.py
+   python tune_hyperparameters.py
+   python app_pages/model_training.py
