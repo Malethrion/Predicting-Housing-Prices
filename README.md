@@ -320,7 +320,9 @@ The project is deployed to Render. Follow these steps to deploy:
    jupyter_notebooks/*.ipynb
    data/*.csv
 
-- Take a screenshot of your Render dashboard or deployment logs (e.g., outputs/render_deployment.png) for your submission.
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
+![Predicting Housing Prices]()
 
 [Back to top](#table-of-contents)
 
