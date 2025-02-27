@@ -240,9 +240,14 @@ To prepare the app for use, run the following backend processes in order to gene
    ```bash
    python script/model_training.py
 
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend1.png?raw=true)
+**..........**
+
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend2.png?raw=true)
+
 After completing these steps, run the Streamlit app: streamlit run app.py
 
-Ensure all .csv and .pkl files are generated successfully. If errors occur, verify data/train.csv exists and requirements.txt is installed. Take screenshots of terminal output or file generation (e.g., outputs/backend_execution.png) for your submission.
+Ensure all .csv and .pkl files are generated successfully. If errors occur, verify data/train.csv exists and requirements.txt is installed.
 
 [Back to top](#table-of-contents)
 
