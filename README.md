@@ -301,6 +301,16 @@ Ensure all .csv and .pkl files are generated successfully. If errors occur, veri
 
 [Back to top](#table-of-contents)
 
+## Code Quality
+
+To ensure the code adheres to PEP 8 style guidelines, linting is performed using the Code Institute Python Linter. Issues such as missing whitespace (E231) and line length exceeding 79 characters (E501) were mostly identified and resolved.
+
+### Linting Process
+1. Go to [Code Institute Python Linter](https://pep8ci.herokuapp.com/).
+Drag and drop python files for full scan.
+
+![Code Institute Python Linter](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Code%20Institute%20Python%20Linter.png?raw=true)
+
 ## Deployment
 
 The project is deployed to Render. Follow these steps to deploy:
