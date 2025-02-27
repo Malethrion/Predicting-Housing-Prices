@@ -4,13 +4,16 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 
+
 def app():
     """Analyze correlations and visualize house price trends with interactive options."""
     st.title("Correlation and Price Visualization")
 
     data_path = "data/final_cleaned_train.csv"
     if not os.path.exists(data_path):
-        st.error(f"File not found: {data_path}. Please run data cleaning first.")
+        st.error(
+            f"File not found: {data_path}. Please run data cleaning first."
+        )
         return
 
     # Load dataset
@@ -21,7 +24,10 @@ def app():
 
     # Option to show full correlation heatmap or simplified version
     st.write("Correlation Analysis")
-    show_full_heatmap = st.checkbox("Show full correlation heatmap (all numeric features)", value=False)
+    show_full_heatmap = st.checkbox(
+        "Show full correlation heatmap (all numeric features)",
+        value=False
+    )
 
     if show_full_heatmap:
         # Full correlation heatmap for all numeric features
@@ -31,12 +37,23 @@ def app():
         sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
         st.pyplot(fig)
     else:
-        # Simplified heatmap: only significant correlations with SalePrice (threshold > |0.3|)
+        # Simplified heatmap: only significant correlations with SalePrice
+        # (threshold > |0.3|)
         st.write("Correlations with SalePrice (threshold > |0.3|)")
-        correlation_with_price = numeric_data.corr()["SalePrice"].sort_values(key=abs, ascending=False)
-        significant_correlations = correlation_with_price[abs(correlation_with_price) > 0.3]
+        correlation_with_price = numeric_data.corr()["SalePrice"].sort_values(
+            key=abs, ascending=False
+        )
+        significant_correlations = correlation_with_price[
+            abs(correlation_with_price) > 0.3
+        ]
         fig, ax = plt.subplots(figsize=(10, 6))
-        sns.heatmap(significant_correlations.to_frame(), annot=True, cmap="coolwarm", fmt=".2f", ax=ax)
+        sns.heatmap(
+            significant_correlations.to_frame(),
+            annot=True,
+            cmap="coolwarm",
+            fmt=".2f",
+            ax=ax
+        )
         ax.set_title("Significant Correlations with SalePrice")
         st.pyplot(fig)
 
@@ -59,8 +76,11 @@ def app():
     # Interactive feature vs. SalePrice scatter plots
     st.write("Feature vs. SalePrice Scatter Plots")
     numeric_features = data.select_dtypes(include=['int64', 'float64']).columns
-    selected_feature = st.selectbox("Select a feature", options=numeric_features, index=numeric_features.get_loc("GrLivArea"))
-    
+    selected_feature = st.selectbox(
+        "Select a feature",
+        options=numeric_features,
+        index=numeric_features.get_loc("GrLivArea")
+    )
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.scatterplot(data=data, x=selected_feature, y="SalePrice", ax=ax)
     ax.set_title(f"{selected_feature} vs. Sale Price")
@@ -70,13 +90,16 @@ def app():
 
     # Top 10 correlated features with SalePrice (bar plot)
     st.write("Top 10 Features Correlated with SalePrice")
-    correlation_with_price = numeric_data.corr()["SalePrice"].sort_values(ascending=False)[1:11]  # Exclude SalePrice itself
+    correlation_with_price = numeric_data.corr()["SalePrice"].sort_values(
+        ascending=False
+    )[1:11]  # Exclude SalePrice itself
     fig, ax = plt.subplots(figsize=(10, 6))
     correlation_with_price.plot(kind="bar", ax=ax)
     ax.set_title("Top 10 Features Correlated with Sale Price")
     ax.set_xlabel("Feature")
     ax.set_ylabel("Correlation Coefficient")
     st.pyplot(fig)
+
 
 if __name__ == "__main__":
     app()

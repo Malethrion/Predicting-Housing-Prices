@@ -4,7 +4,8 @@ import importlib
 # Set the page configuration
 st.set_page_config(page_title="Predicting Housing Prices", layout="wide")
 
-# Define user-facing pages only (remove Data Cleaning, Feature Engineering, Model Training)
+# Define user-facing pages only (remove Data Cleaning, Feature Engineering, Model
+# Training)
 PAGES = {
     "Home": "app_pages.home_page",
     "Correlation Study": "app_pages.correlation_study",
@@ -27,6 +28,11 @@ try:
     if hasattr(module, "app"):
         module.app()  # Call the app function of the selected module
     else:
-        st.error(f"Error: `{selected_page}` module is missing an `app()` function.")
+        st.error(
+            f"Error: `{selected_page}` module is missing an `app()` function."
+        )
 except ModuleNotFoundError:
-    st.error(f"Error: `{selected_page}` module not found. Please check your project structure.")
+    st.error(
+        f"Error: `{selected_page}` module not found. Please check your project"
+        "structure."
+    )

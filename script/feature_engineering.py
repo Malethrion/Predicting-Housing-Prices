@@ -5,11 +5,14 @@ import pickle
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
+
 def engineer_features():
     """Perform feature engineering, including scaling and encoding, and save processed data."""
     data_path = "data/final_cleaned_train.csv"
     if not os.path.exists(data_path):
-        raise FileNotFoundError(f"File not found: {data_path}. Please run data cleaning first.")
+        raise FileNotFoundError(
+            f"File not found: {data_path}. Please run data cleaning first."
+        )
 
     print(f"Data file found: {data_path}")
 
@@ -21,7 +24,10 @@ def engineer_features():
     # Identify features and target
     target = "SalePrice"
     if target not in data.columns:
-        raise KeyError(f"`{target}` column is missing. Ensure `final_cleaned_train.csv` includes target values.")
+        raise KeyError(
+            f"`{target}` column is missing. Ensure `final_cleaned_train.csv` "
+            "includes target values."
+        )
 
     y = np.log1p(data[target])  # Log-transform SalePrice for better model performance
     X = data.drop(columns=[target])
@@ -35,7 +41,8 @@ def engineer_features():
     preprocessor = ColumnTransformer(
         transformers=[
             ('num', MinMaxScaler(), numerical_features),
-            ('cat', OneHotEncoder(handle_unknown='ignore', sparse_output=False), categorical_features)
+            ('cat', OneHotEncoder(handle_unknown='ignore', sparse_output=False),
+             categorical_features)
         ]
     )
 
@@ -47,7 +54,9 @@ def engineer_features():
 
     # Extract feature names
     try:
-        encoded_feature_names = preprocessor.named_transformers_['cat'].get_feature_names_out(categorical_features)
+        encoded_feature_names = preprocessor.named_transformers_['cat'].get_feature_names_out(
+            categorical_features
+        )
         feature_names = list(numerical_features) + list(encoded_feature_names)
     except Exception as e:
         raise Exception(f"Error extracting feature names: {e}")
@@ -79,6 +88,7 @@ def engineer_features():
         pickle.dump(feature_names, f)
 
     print("Preprocessor and Feature Names Saved!")
+
 
 if __name__ == "__main__":
     engineer_features()

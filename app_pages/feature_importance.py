@@ -3,6 +3,7 @@ import pandas as pd
 import pickle
 import matplotlib.pyplot as plt
 
+
 def app():
     """Display feature importance from the trained model."""
     st.title("Feature Importance")
@@ -37,6 +38,7 @@ def app():
     ax.set_ylabel("Feature")
     ax.set_title("Top 20 Important Features")
     st.pyplot(fig)
+
 
 if __name__ == "__main__":
     app()

@@ -1,11 +1,15 @@
 import pandas as pd
 import os
 
+
 def clean_data():
     """Perform data cleaning and save the cleaned dataset."""
     data_path = "data/train.csv"
     if not os.path.exists(data_path):
-        raise FileNotFoundError(f"File not found: {data_path}. Please ensure the dataset is available in the 'data' directory.")
+        raise FileNotFoundError(
+            f"File not found: {data_path}. Please ensure the dataset is available "
+            "in the 'data' directory."
+        )
 
     # Load dataset
     data = pd.read_csv(data_path)
@@ -37,6 +41,7 @@ def clean_data():
     print(f"Saved as `{cleaned_data_path}`.")
     print("Summary statistics after cleaning:")
     print(data.describe())
+
 
 if __name__ == "__main__":
     clean_data()

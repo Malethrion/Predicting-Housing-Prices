@@ -1,7 +1,9 @@
 import streamlit as st
 
+
 class MultiPage:
     """Class to handle multiple Streamlit pages"""
+
     def __init__(self, app_name):
         self.pages = []
         self.app_name = app_name
@@ -14,3 +16,8 @@ class MultiPage:
         st.title(self.app_name)
         page = st.sidebar.radio("Navigation", self.pages, format_func=lambda page: page["title"])
         page["function"]()
+
+
+if __name__ == "__main__":
+    multi_page = MultiPage("Predicting Housing Prices")
+    multi_page.run()

@@ -6,10 +6,12 @@ import pickle
 import os
 from sklearn.model_selection import cross_val_score
 
+
 # Load dataset
 data = pd.read_csv("data/processed_train.csv")
 X = data.drop(columns=["SalePrice"])
 y = data["SalePrice"]
+
 
 def objective(trial):
     """Optimize XGBoost hyperparameters for house price prediction."""
@@ -27,6 +29,7 @@ def objective(trial):
     model = xgb.XGBRegressor(**params)
     scores = cross_val_score(model, X, y, cv=5, scoring="neg_root_mean_squared_error")
     return -np.mean(scores)  # Minimize RMSE
+
 
 # Reduce verbosity for cleaner output
 optuna.logging.set_verbosity(optuna.logging.WARNING)

@@ -4,6 +4,7 @@ import numpy as np
 import pickle
 import os
 
+
 def app():
     """Provide a user interface to predict house prices based on input features."""
     st.title("Predicting House Prices")
@@ -14,13 +15,22 @@ def app():
     feature_names_path = "models/feature_names.pkl"
 
     if not os.path.exists(model_path):
-        st.error(f"Optimized model file not found at `{model_path}`. Run hyperparameter tuning and model training first.")
+        st.error(
+            f"Optimized model file not found at `{model_path}`. Run hyperparameter "
+            "tuning and model training first."
+        )
         return
     if not os.path.exists(preprocessor_path):
-        st.error(f"Preprocessor file not found at `{preprocessor_path}`. Run feature engineering first.")
+        st.error(
+            f"Preprocessor file not found at `{preprocessor_path}`. Run feature "
+            "engineering first."
+        )
         return
     if not os.path.exists(feature_names_path):
-        st.error(f"Feature names file not found at `{feature_names_path}`. Run feature engineering first.")
+        st.error(
+            f"Feature names file not found at `{feature_names_path}`. Run feature "
+            "engineering first."
+        )
         return
 
     try:
@@ -38,13 +48,29 @@ def app():
 
     # User inputs (numerical and categorical features)
     st.subheader("Enter House Features:")
-    GrLivArea = st.number_input("GrLivArea (Above Ground Living Area in SqFt)", min_value=500, max_value=10000, value=3000)
+    GrLivArea = st.number_input(
+        "GrLivArea (Above Ground Living Area in SqFt)",
+        min_value=500,
+        max_value=10000,
+        value=3000
+    )
     OverallQual = st.slider("OverallQual (Overall Quality 1-10)", 1, 10, 9)
     GarageCars = st.slider("GarageCars (Number of Garages)", 0, 5, 3)
-    YearBuilt = st.number_input("YearBuilt (Year House Built)", min_value=1800, max_value=2025, value=2020)
-    TotalBsmtSF = st.number_input("TotalBsmtSF (Total Basement Size in SqFt)", min_value=0, max_value=10000, value=2000)
+    YearBuilt = st.number_input(
+        "YearBuilt (Year House Built)",
+        min_value=1800,
+        max_value=2025,
+        value=2020
+    )
+    TotalBsmtSF = st.number_input(
+        "TotalBsmtSF (Total Basement Size in SqFt)",
+        min_value=0,
+        max_value=10000,
+        value=2000
+    )
 
-    # Hardcode common categorical values for high-value homes (based on Kaggle dataset defaults)
+    # Hardcode common categorical values for high-value homes (based on Kaggle dataset
+    # defaults)
     MSZoning = "RL"
     Street = "Pave"
     Alley = "No"
@@ -90,26 +116,34 @@ def app():
     SaleCondition = "Partial"  # Partial sale for higher value
 
     # Define numerical and categorical features
-    numerical_features = ['Id', 'MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual', 'OverallCond', 'YearBuilt', 
-                         'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1', 'BsmtFinSF2', 'BsmtUnfSF', 'TotalBsmtSF', 
-                         '1stFlrSF', '2ndFlrSF', 'LowQualFinSF', 'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 
-                         'FullBath', 'HalfBath', 'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd', 'Fireplaces', 
-                         'GarageYrBlt', 'GarageCars', 'GarageArea', 'WoodDeckSF', 'OpenPorchSF', 'EnclosedPorch', 
-                         '3SsnPorch', 'ScreenPorch', 'PoolArea', 'MiscVal', 'MoSold', 'YrSold']
-    categorical_features = ['MSZoning', 'Street', 'Alley', 'LotShape', 'LandContour', 'Utilities', 'LotConfig', 
-                           'LandSlope', 'Neighborhood', 'Condition1', 'Condition2', 'BldgType', 'HouseStyle', 
-                           'RoofStyle', 'RoofMatl', 'Exterior1st', 'Exterior2nd', 'MasVnrType', 'ExterQual', 
-                           'ExterCond', 'Foundation', 'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 
-                           'BsmtFinType2', 'Heating', 'HeatingQC', 'CentralAir', 'Electrical', 'KitchenQual', 
-                           'Functional', 'FireplaceQu', 'GarageType', 'GarageFinish', 'GarageQual', 'GarageCond', 
-                           'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature', 'SaleType', 'SaleCondition']
+    numerical_features = [
+        'Id', 'MSSubClass', 'LotFrontage', 'LotArea', 'OverallQual', 'OverallCond',
+        'YearBuilt', 'YearRemodAdd', 'MasVnrArea', 'BsmtFinSF1', 'BsmtFinSF2',
+        'BsmtUnfSF', 'TotalBsmtSF', '1stFlrSF', '2ndFlrSF', 'LowQualFinSF',
+        'GrLivArea', 'BsmtFullBath', 'BsmtHalfBath', 'FullBath', 'HalfBath',
+        'BedroomAbvGr', 'KitchenAbvGr', 'TotRmsAbvGrd', 'Fireplaces', 'GarageYrBlt',
+        'GarageCars', 'GarageArea', 'WoodDeckSF', 'OpenPorchSF', 'EnclosedPorch',
+        '3SsnPorch', 'ScreenPorch', 'PoolArea', 'MiscVal', 'MoSold', 'YrSold'
+    ]
+    categorical_features = [
+        'MSZoning', 'Street', 'Alley', 'LotShape', 'LandContour', 'Utilities',
+        'LotConfig', 'LandSlope', 'Neighborhood', 'Condition1', 'Condition2',
+        'BldgType', 'HouseStyle', 'RoofStyle', 'RoofMatl', 'Exterior1st',
+        'Exterior2nd', 'MasVnrType', 'ExterQual', 'ExterCond', 'Foundation',
+        'BsmtQual', 'BsmtCond', 'BsmtExposure', 'BsmtFinType1', 'BsmtFinType2',
+        'Heating', 'HeatingQC', 'CentralAir', 'Electrical', 'KitchenQual',
+        'Functional', 'FireplaceQu', 'GarageType', 'GarageFinish', 'GarageQual',
+        'GarageCond', 'PavedDrive', 'PoolQC', 'Fence', 'MiscFeature', 'SaleType',
+        'SaleCondition'
+    ]
 
     # Create user_data with default float64 for numerical and object for categorical
     user_data = pd.DataFrame(columns=numerical_features + categorical_features)
     user_data[numerical_features] = user_data[numerical_features].astype('float64')
     user_data[categorical_features] = user_data[categorical_features].astype('object')
 
-    # Set numerical features (default to median or realistic values for higher predictions)
+    # Set numerical features (default to median or realistic values for higher
+    # predictions)
     user_data.loc[0, 'GrLivArea'] = GrLivArea
     user_data.loc[0, 'OverallQual'] = OverallQual
     user_data.loc[0, 'GarageCars'] = GarageCars
