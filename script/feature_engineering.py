@@ -1,4 +1,3 @@
-import streamlit as st
 import pandas as pd
 import os
 import numpy as np
@@ -6,27 +5,23 @@ import pickle
 from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
 from sklearn.compose import ColumnTransformer
 
-def app():
+def engineer_features():
     """Perform feature engineering, including scaling and encoding, and save processed data."""
-    st.title("Feature Engineering")
-
     data_path = "data/final_cleaned_train.csv"
     if not os.path.exists(data_path):
-        st.error(f"File not found: {data_path}. Please run data cleaning first.")
-        return
+        raise FileNotFoundError(f"File not found: {data_path}. Please run data cleaning first.")
 
-    st.write("Data file found: {data_path}")
+    print(f"Data file found: {data_path}")
 
     # Load dataset
     data = pd.read_csv(data_path)
-    st.write("Dataset Preview (First 5 rows):")
-    st.dataframe(data.head())
+    print("Dataset Preview (First 5 rows):")
+    print(data.head())
 
     # Identify features and target
     target = "SalePrice"
     if target not in data.columns:
-        st.error(f"`{target}` column is missing. Ensure `final_cleaned_train.csv` includes target values.")
-        return
+        raise KeyError(f"`{target}` column is missing. Ensure `final_cleaned_train.csv` includes target values.")
 
     y = np.log1p(data[target])  # Log-transform SalePrice for better model performance
     X = data.drop(columns=[target])
@@ -34,7 +29,7 @@ def app():
     numerical_features = X.select_dtypes(include=['int64', 'float64']).columns.tolist()
     categorical_features = X.select_dtypes(include=['object']).columns.tolist()
 
-    st.write(f"Numeric Features: {len(numerical_features)} | Categorical Features: {len(categorical_features)}")
+    print(f"Numeric Features: {len(numerical_features)} | Categorical Features: {len(categorical_features)}")
 
     # Define and fit transformations using ColumnTransformer
     preprocessor = ColumnTransformer(
@@ -48,18 +43,16 @@ def app():
     try:
         transformed_data = preprocessor.fit_transform(X)
     except Exception as e:
-        st.error(f"Error in data transformation: {e}")
-        return
+        raise Exception(f"Error in data transformation: {e}")
 
     # Extract feature names
     try:
         encoded_feature_names = preprocessor.named_transformers_['cat'].get_feature_names_out(categorical_features)
         feature_names = list(numerical_features) + list(encoded_feature_names)
     except Exception as e:
-        st.error(f"Error extracting feature names: {e}")
-        return
+        raise Exception(f"Error extracting feature names: {e}")
 
-    st.write("Feature transformation successful!")
+    print("Feature transformation successful!")
 
     # Convert to DataFrame and add log-transformed SalePrice
     processed_data = pd.DataFrame(transformed_data, columns=feature_names)
@@ -70,10 +63,10 @@ def app():
     os.makedirs("data", exist_ok=True)
     processed_data.to_csv(processed_data_path, index=False)
 
-    st.write("Feature Engineering Completed!")
-    st.write(f"Processed data saved at `{processed_data_path}`")
-    st.write("Transformed Data Preview:")
-    st.write(processed_data.head())
+    print("Feature Engineering Completed!")
+    print(f"Processed data saved at `{processed_data_path}`")
+    print("Transformed Data Preview:")
+    print(processed_data.head())
 
     # Save the preprocessor and feature names
     model_dir = "models"
@@ -85,7 +78,7 @@ def app():
     with open(f"{model_dir}/feature_names.pkl", "wb") as f:
         pickle.dump(feature_names, f)
 
-    st.write("Preprocessor and Feature Names Saved!")
+    print("Preprocessor and Feature Names Saved!")
 
 if __name__ == "__main__":
-    app()
+    engineer_features()

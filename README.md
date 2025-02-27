@@ -197,24 +197,26 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 | Correlation Study        | View correlation and price visualization     | Displays simplified heatmap: only significant correlations with `SalePrice`, full correlation heatmap for all numeric features, price distribution, interactive feature vs. `SalePrice` scatter plots and top 10 correlated features with `SalePrice` | Functions as intended                              |
 | House Price Prediction   | Input features and predict      | Predicted price displayed in USD                     | Functions as intended                              |
 | Feature Importance       | View feature importance chart   | Bar chart shows top 20 features by importance        | Functions as intended                              
-| Hyperparameter Tuning    | View tuning results             | Optimized parameters and RMSE displayed instantly    | Functions as intended                              |
+| Hyperparameter Tuning    | View tuning results             | Optimized parameters and RMSE displayed instantly    | Functions as intended   
+
+### Screenshots and Testing                           |
 ![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Home.png?raw=true)
 ![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Navigation%20bar.png?raw=true)
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Correlations%20with%20SalePrice.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Full%20Correlation%20Heatmap.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/SalePrice%20Distribution.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Feature%20vs.%20SAlePrice%20Scatter%20Plots.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Select%20a%20feature%20(Feature%20vs.%20SAlePrice%20Scatter%20Plots).png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Top%2010%20Features%20Correlated%20with%20SalePrice.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Predicting%20House%20Prices%20sample.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Feature%20Importance%20Ranking.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Hyperparameter%20Tuning.png?raw=true)
 
 [Back to top](#table-of-contents)
 
 ## Known Issues
 
 No known issues at this time.
-*If you discover bugs (e.g., slow load times, prediction errors), list them here with details (e.g., “Prediction page fails with missing `GrLivArea` input”). Update after testing all components.*
 
 [Back to top](#table-of-contents)
 
@@ -224,19 +226,19 @@ To prepare the app for use, run the following backend processes in order to gene
 
 1. **Data Cleaning**:
    ```bash
-   python app_pages/data_cleaning.py
+   python script/data_cleaning.py
 
 2. **Feature Engineering**:
    ```bash
-   python app_pages/feature_engineering.py
+   python script/feature_engineering.py
 
 3. **Hyperparameter Tuning (Offline)**:
    ```bash
-   python tune_hyperparameters.py
+   python script/tune_hyperparameters.py
 
 4. **Model Training**:
    ```bash
-   python app_pages/model_training.pya
+   python script/model_training.py
 
 After completing these steps, run the Streamlit app: streamlit run app.py
 

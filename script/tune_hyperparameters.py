@@ -2,7 +2,8 @@ import optuna
 import xgboost as xgb
 import pandas as pd
 import numpy as np
-import pickle  # Added for saving parameters and RMSE
+import pickle
+import os
 from sklearn.model_selection import cross_val_score
 
 # Load dataset
@@ -19,7 +20,7 @@ def objective(trial):
         "subsample": trial.suggest_float("subsample", 0.6, 1.0),
         "colsample_bytree": trial.suggest_float("colsample_bytree", 0.6, 1.0),
         "min_child_weight": trial.suggest_int("min_child_weight", 1, 10),
-        "gamma": trial.suggest_float("gamma", 0, 5),
+        "gamma": trial.suggest_float("gamma", 0.0, 5.0),
         "random_state": 42,
         "enable_categorical": False
     }
@@ -35,7 +36,6 @@ study = optuna.create_study(direction="minimize")
 study.optimize(objective, n_trials=100)
 
 # Save best parameters and RMSE
-import os
 os.makedirs("models", exist_ok=True)
 with open("models/best_params.pkl", "wb") as f:
     pickle.dump(study.best_params, f)
