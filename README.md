@@ -447,7 +447,8 @@ The project is deployed to Render. Follow these steps to deploy:
 ## Credits
 
 ### Data Sources
-- [Kaggle’s "House Prices - Advanced Regression Techniques" dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data)
+- [Kaggle’s "House Prices - Advanced Regression Techniques" dataset](https://www.kaggle.com/c/house-prices-advanced-regression-techniques/data) - Data Source
+- [CVD-predictor](https://github.com/jfpaliga/CVD-predictor.git) - Inspirational structure of the project
 
 [Back to top](#table-of-contents)
 
