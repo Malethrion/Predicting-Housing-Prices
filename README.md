@@ -291,7 +291,9 @@ To prepare the app for use, run the following backend processes in order to gene
 
 "Screenshot of terminal output for Data Cleaning, Feature Engineering, Hyperparameter Tuning and Model Training."
 
-**Backend Execution 2:**![Backend Execution 2](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend2.png?raw=true)
+**Backend Execution 2:**
+
+![Backend Execution 2](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend2.png?raw=true)
 
 "Screenshot of terminal output for ending output of Model Training."
 
@@ -380,9 +382,24 @@ The project is deployed to Render. Follow these steps to deploy:
    jupyter_notebooks/*.ipynb
    data/*.csv
 
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderdashboard.png?raw=true)
+#### Deployment Evidence
+**Render Dashboard:**
+
+![Render Dashboard](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderdashboard.png?raw=true)
+
+"Screenshot of the Render deployment dashboard."
+
+**Render Logs 1:**
+
 ![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderlogs1.png?raw=true)
+
+"Screenshot of Render deployment logs part 1."
+
+**Render Logs 2:**
+
 ![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderlogs2.png?raw=true)
+
+"Screenshot of Render deployment logs part 2."
 
 [Back to top](#table-of-contents)
 
