@@ -45,36 +45,36 @@ The dataset is sourced from [Kaggle’s "House Prices - Advanced Regression Tech
 ## Business Requirements
 
 - Real estate businesses need to predict housing prices using historical data and property attributes.
-- **Business Requirement 1**: Understand which features most strongly influence house pricing through correlation analysis and feature importance.
-- **Business Requirement 2**: Predict the sale price of houses given a set of property features using a regression model.
+- **Business Requirement 1:** Understand which features most strongly influence house pricing through correlation analysis and feature importance.
+- **Business Requirement 2:** Predict the sale price of houses given a set of property features using a regression model.
 
 [Back to top](#table-of-contents)
 
 ## Hypothesis and Validation
 
-- **Hypothesis 1**:
+- **Hypothesis 1:**
   - House size and neighborhood are the most significant factors influencing house prices.
-  - **Validation**: Conduct correlation analysis, feature importance studies, and visualize relationships using scatter plots and heatmaps.
+  - **Validation:v** Conduct correlation analysis, feature importance studies, and visualize relationships using scatter plots and heatmaps.
 
-- **Hypothesis 2**:
+- **Hypothesis 2:**
   - Accurate predictions rely on multiple features, including house size, age, and neighborhood.
-  - **Validation**: Evaluate model performance using metrics like RMSE, R-squared, and cross-validation, and analyze feature importance.
+  - **Validation:** Evaluate model performance using metrics like RMSE, R-squared, and cross-validation, and analyze feature importance.
 
-- **Hypothesis 3**:
+- **Hypothesis 3:**
   - Homes in popular neighborhoods have higher prices.
-  - **Validation**: Analyze price distributions by neighborhood and visualize with histograms or box plots.
+  - **Validation:** Analyze price distributions by neighborhood and visualize with histograms or box plots.
 
 [Back to top](#table-of-contents)
 
 ## Mapping Business Requirements to Data Visualizations and ML Tasks
 
-- **Business Requirement 1**: Data Visualization and Correlation Analysis
+- **Business Requirement 1:** Data Visualization and Correlation Analysis
   - Perform correlation studies (Pearson’s, Spearman’s) and Predictive Power Score (PPS) to identify key predictors.
   - Visualize relationships using heatmaps, scatter plots, and bar charts in the Streamlit app’s “Correlation Study” page.
 
-- **Business Requirement 2**: Regression Model Development
+- **Business Requirement 2:** Regression Model Development
   - Build an XGBoost regression model, optimize hyperparameters with Optuna, and validate using train-test splits and cross-validation.
-  - Implement prediction functionality in the “House Price Prediction” page, allowing users to input features and receive price estimates.
+  - Implement prediction functionality in the “Predicting House Prices” page, allowing users to input features and receive price estimates.
 
 [Back to top](#table-of-contents)
 
@@ -83,39 +83,39 @@ The dataset is sourced from [Kaggle’s "House Prices - Advanced Regression Tech
 **Regression Model for House Price Prediction**
 
 - **Objective**: Develop a machine learning model to predict housing prices (`SalePrice`) based on features like size, bedrooms, neighborhood, and more.
-- **Target Variable**: `SalePrice` (continuous, in USD).
-- **Success Metrics**:
+- **Target Variable:** `SalePrice` (continuous, in USD).
+- **Success Metrics:**
   - R-squared ≥ 0.85 for both training and testing sets.
   - RMSE ≤ 0.13 on log-transformed prices (based on current results).
-- **Failure Criteria**:
+- **Failure Criteria:**
   - R-squared < 0.80.
   - Poor generalization to unseen data (e.g., high RMSE on test set).
-- **Data Source**: Kaggle’s house price dataset, containing historical pricing and feature data for ~1,460 properties.
+- **Data Source:** Kaggle’s house price dataset, containing historical pricing and feature data for ~1,460 properties.
 
 [Back to top](#table-of-contents)
 
 ## Epics and User Stories
 
 ### Epic - Information Gathering and Data Collection
-- **User Story**: As a data analyst, I can import the Kaggle dataset and save it locally for analysis.
-- **User Story**: As a data analyst, I can load the saved dataset for exploration and processing.
+- **User Story:** As a data analyst, I can import the Kaggle dataset and save it locally for analysis.
+- **User Story:** As a data analyst, I can load the saved dataset for exploration and processing.
 
 ### Epic - Data Visualization, Cleaning, and Preparation
-- **User Story**: As a data scientist, I can visualize the dataset to identify features correlating with house prices (Business Requirement 1).
-- **User Story**: As a data analyst, I can clean the dataset, handling missing values and outliers.
-- **User Story**: As a data scientist, I can engineer features (e.g., scaling, encoding) for optimal ML model performance.
+- **User Story:** As a data scientist, I can visualize the dataset to identify features correlating with house prices (Business Requirement 1).
+- **User Story:** As a data analyst, I can clean the dataset, handling missing values and outliers.
+- **User Story:** As a data scientist, I can engineer features (e.g., scaling, encoding) for optimal ML model performance.
 
 ### Epic - Model Training, Optimization, and Validation
-- **User Story**: As a data engineer, I can train an XGBoost regression model using a train-test split.
-- **User Story**: As a data scientist, I can optimize model hyperparameters offline with Optuna for best performance.
-- **User Story**: As a data scientist, I can evaluate model performance (e.g., RMSE, R-squared) to ensure accurate predictions.
+- **User Story:** As a data engineer, I can train an XGBoost regression model using a train-test split.
+- **User Story:** As a data scientist, I can optimize model hyperparameters offline with Optuna for best performance.
+- **User Story:** As a data scientist, I can evaluate model performance (e.g., RMSE, R-squared) to ensure accurate predictions.
 
 ### Epic - Dashboard Planning, Designing, and Development
-- **User Story**: As a non-technical user, I can input house features (e.g., size, quality) and receive a predicted price (Business Requirement 2).
-- **User Story**: As a non-technical user, I can view project summaries, business requirements, and conclusions.
+- **User Story:** As a non-technical user, I can input house features (e.g., size, quality) and receive a predicted price (Business Requirement 2).
+- **User Story:** As a non-technical user, I can view project summaries, business requirements, and conclusions.
 
 ### Epic - Dashboard Deployment and Release
-- **User Story**: As a user, I can interact with the deployed Streamlit app to explore predictions and visualizations in real time.
+- **User Story:** As a user, I can interact with the deployed Streamlit app to explore predictions and visualizations in real time.
 
 [Back to top](#table-of-contents)
 
@@ -126,7 +126,7 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 ### User-Facing Pages (Visible in the Dashboard)
 
 #### Page 1: Home Page
-- **Section 1 - Overview**:
+- **Section 1 - Overview:**
   - Introduction to the project, dataset, and business requirements, as defined in `home_page.py`.
 
 #### Page 2: Correlation Study
@@ -199,18 +199,62 @@ The Predicting Housing Prices app is structured as an interactive Streamlit web 
 | Feature Importance       | View feature importance chart   | Bar chart shows top 20 features by importance        | Functions as intended                              
 | Hyperparameter Tuning    | View tuning results             | Optimized parameters and RMSE displayed instantly    | Functions as intended   
 
-### Screenshots and Testing                           |
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Home.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Navigation%20bar.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Correlations%20with%20SalePrice.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Full%20Correlation%20Heatmap.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/SalePrice%20Distribution.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Feature%20vs.%20SAlePrice%20Scatter%20Plots.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Select%20a%20feature%20(Feature%20vs.%20SAlePrice%20Scatter%20Plots).png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Top%2010%20Features%20Correlated%20with%20SalePrice.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Predicting%20House%20Prices%20sample.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Feature%20Importance%20Ranking.png?raw=true)
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Hyperparameter%20Tuning.png?raw=true)
+#### Screenshots and Evidence
+- **Home Page:** 
+
+![Home Page](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Home.png?raw=true) 
+
+"Screenshot showing the project summary and business requirements."
+- **Navigation Bar:** 
+
+![Navigation Bar](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Navigation%20bar.png?raw=true) 
+
+"Screenshot showing the app's navigation sidebar."
+- **Correlation Study - Significant Correlations:** 
+
+![Significant Correlations](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Correlations%20with%20SalePrice.png?raw=true) 
+
+"Screenshot of the simplified correlation heatmap."
+- **Correlation Study - Full Heatmap:** 
+
+![Full Correlation Heatmap](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Full%20Correlation%20Heatmap.png?raw=true) 
+
+"Screenshot of the full correlation heatmap."
+- **Correlation Study - Price Distribution:** 
+
+![Price Distribution](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/SalePrice%20Distribution.png?raw=true) 
+
+"Screenshot of the price distribution histogram and box plot."
+- **Correlation Study - Scatter Plots:** 
+
+![Feature vs. SalePrice Scatter Plots](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Feature%20vs.%20SAlePrice%20Scatter%20Plots.png?raw=true) 
+
+"Screenshot of the interactive scatter plot."
+- **Correlation Study - Feature Selection:** 
+
+![Feature Selection](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Select%20a%20feature%20(Feature%20vs.%20SAlePrice%20Scatter%20Plots).png?raw=true) 
+
+"Screenshot of the feature selection dropdown."
+- **Correlation Study - Top 10 Features:** 
+
+![Top 10 Features](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Top%2010%20Features%20Correlated%20with%20SalePrice.png?raw=true) 
+
+"Screenshot of the top 10 correlated features bar chart."
+- **House Price Prediction:** 
+
+![House Price Prediction](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Predicting%20House%20Prices%20sample.png?raw=true) 
+
+"Screenshot of the input form and predicted price."
+- **Feature Importance:** 
+
+![Feature Importance](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Feature%20Importance%20Ranking.png?raw=true) 
+
+"Screenshot of the feature importance bar chart."
+- **Hyperparameter Tuning:** 
+
+![Hyperparameter Tuning](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Hyperparameter%20Tuning.png?raw=true) 
+
+"Screenshot of the hyperparameter tuning results."
 
 [Back to top](#table-of-contents)
 
@@ -224,26 +268,32 @@ No known issues at this time.
 
 To prepare the app for use, run the following backend processes in order to generate necessary data and model files before launching the Streamlit app:
 
-1. **Data Cleaning**:
+1. **Data Cleaning:**
    ```bash
    python script/data_cleaning.py
 
-2. **Feature Engineering**:
+2. **Feature Engineering:**
    ```bash
    python script/feature_engineering.py
 
-3. **Hyperparameter Tuning (Offline)**:
+3. **Hyperparameter Tuning (Offline):**
    ```bash
    python script/tune_hyperparameters.py
 
-4. **Model Training**:
+4. **Model Training:**
    ```bash
    python script/model_training.py
 
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend1.png?raw=true)
-**..........**
+#### Setup Evidence
+**Backend Execution 1:**
 
-![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend2.png?raw=true)
+![Backend Execution 1](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend1.png?raw=true)
+
+"Screenshot of terminal output for Data Cleaning, Feature Engineering, Hyperparameter Tuning and Model Training."
+
+**Backend Execution 2:**![Backend Execution 2](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Backend2.png?raw=true)
+
+"Screenshot of terminal output for ending output of Model Training."
 
 After completing these steps, run the Streamlit app: streamlit run app.py
 
@@ -320,9 +370,9 @@ The project is deployed to Render. Follow these steps to deploy:
    jupyter_notebooks/*.ipynb
    data/*.csv
 
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
-![Predicting Housing Prices]()
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderdashboard.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderlogs1.png?raw=true)
+![Predicting Housing Prices](https://github.com/Malethrion/Predicting-Housing-Prices/blob/main/static/Renderlogs2.png?raw=true)
 
 [Back to top](#table-of-contents)
 
